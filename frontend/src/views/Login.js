@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 function Login(){
 
@@ -6,7 +6,7 @@ function Login(){
 
         <div>Login</div>
     )
-
 }
+
 
 export default Login
