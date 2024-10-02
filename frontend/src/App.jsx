@@ -1,7 +1,7 @@
-import './App.css'
-import Login from './views/login'
-import Dashboard from './views/Dashboard'
-import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
+import './assets/css/App.css';
+import Login from './views/Login';
+import Dashboard from './views/Dashboard';
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 
 function App() {
 

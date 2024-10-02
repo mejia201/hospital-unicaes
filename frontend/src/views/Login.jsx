@@ -85,7 +85,8 @@ function Login() {
   };
 
     return (
-        <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="d-flex justify-content-center align-items-center vh-100" style={{ margin: '0 auto', display: 'flex', placeItems: 'center', minWidth: '320px', minHeight: '100vh',  textAlign: 'center'}}>   
+    
             <div className="card p-4 shadow" style={{ width: '400px' }}>
                 <div className="text-center mb-4">
                     <img 
