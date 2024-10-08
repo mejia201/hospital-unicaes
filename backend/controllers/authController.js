@@ -1,13 +1,8 @@
-const db = require('../database/conexion')
+const Usuario = require('../models/UsuarioModel');
 
 
 const login = (req, res) => {
-    const sql = `
-        SELECT usuario.*, rol.nombre_rol FROM usuario 
-        JOIN rol ON usuario.id_rol = rol.id_rol 
-        WHERE usuario.email = ? AND usuario.password = ?`;
-
-    db.query(sql, [req.body.email, req.body.password], (err, data) => {
+    Usuario.loginUsuario(req.body.email, req.body.password, (err, data) => {
         if (err) {
             return res.status(500).json({ message: "Error en la consulta", error: err });
         }
@@ -18,7 +13,7 @@ const login = (req, res) => {
                 rol: data[0].nombre_rol
             };
             console.log('Usuario autenticado', { user: req.session.user });
-            return res.status(200).json({ message: "Success"});
+            return res.status(200).json({ message: "Success" });
         } else {
             return res.status(401).json({ message: "Fail" });
         }
@@ -50,7 +45,5 @@ const getUser = (req, res) => {
     }
 };
 
-
-
-
 module.exports = { login, logout, getUser };
+

@@ -42,7 +42,23 @@ const JWTLogin = () => {
         setErrors({ submit: 'Credenciales incorrectas' });
       }
     } catch (err) {
-      Swal.fire({
+
+     
+       if (err.response && err.response.status === 401) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Credenciales incorrectas!',
+            icon: 'error',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        setErrors({ submit: 'Credenciales incorrectas' });
+
+       } else{
+
+         Swal.fire({
         title: 'Error',
         text: 'Ocurrió un error al procesar tu solicitud.',
         icon: 'error',
@@ -54,10 +70,14 @@ const JWTLogin = () => {
       });
       console.error("Error en la solicitud:", err);
       setErrors({ submit: 'Ocurrió un error al procesar tu solicitud' });
+        }
+     
     } finally {
       setSubmitting(false);
     }
   };
+
+
 
   return (
     <Formik

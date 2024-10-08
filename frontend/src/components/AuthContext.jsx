@@ -23,9 +23,8 @@ export const AuthProvider = ({ children }) => {
         });
         if (!response.data.success) {
           Swal.fire({
-            icon: 'warning',
-            title: 'Sesión expirada',
-            text: 'Por favor, inicie sesión nuevamente.',
+            icon: 'success',
+            title: 'Sesión cerrada exitosamente',
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
