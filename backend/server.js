@@ -4,6 +4,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const pacienteRoutes = require("./routes/pacienteRoutes")
+const rolRoutes = require("./routes/rolRoutes");
 
 const app = express();
 
@@ -29,7 +30,7 @@ app.use(session({
 // Rutas
 app.use("/auth", authRoutes);
 app.use("/pacientes", pacienteRoutes);
-
+app.use("/roles", rolRoutes);
 
 // Iniciar servidor
 app.listen(8081, () => {

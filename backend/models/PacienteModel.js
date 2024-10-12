@@ -19,7 +19,7 @@ Paciente.listarPacientesActivos = (callback) => {
 
 
 Paciente.insertarPaciente = (pacienteData, callback) => {
-    const sql = `CALL InsertarPaciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `CALL sp_InsertarPaciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const {
         n_expediente,
@@ -56,7 +56,7 @@ Paciente.insertarPaciente = (pacienteData, callback) => {
 
 
 Paciente.actualizarPaciente = (id, pacienteData, callback) => {
-    const sql = `CALL ActualizarPaciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `CALL sp_ActualizarPaciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const {
         n_expediente,
