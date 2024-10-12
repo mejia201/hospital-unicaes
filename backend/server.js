@@ -5,6 +5,11 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/authRoutes");
 const pacienteRoutes = require("./routes/pacienteRoutes")
 const rolRoutes = require("./routes/rolRoutes");
+const areaRoutes = require("./routes/areaRoutes");
+const especialidadRoutes = require("./routes/especialidadRoutes");
+const usuarioRoutes = require("./routes/usuarioRoutes");
+const tipoConsultaRoutes = require("./routes/tipoConsultaRoutes");
+
 
 const app = express();
 
@@ -31,6 +36,10 @@ app.use(session({
 app.use("/auth", authRoutes);
 app.use("/pacientes", pacienteRoutes);
 app.use("/roles", rolRoutes);
+app.use("/areas", areaRoutes);
+app.use("/especialidades", especialidadRoutes);
+app.use("/usuarios", usuarioRoutes)
+app.use("/tipos-consulta", tipoConsultaRoutes)
 
 // Iniciar servidor
 app.listen(8081, () => {

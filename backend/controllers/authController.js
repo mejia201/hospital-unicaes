@@ -26,6 +26,7 @@ const logout = (req, res) => {
             return res.status(500).json({ message: "Error al cerrar sesión" });
         }
         res.clearCookie('connect.sid');
+        console.log("Sesión cerrada con éxito");
         return res.status(200).json({ message: "Sesión cerrada con éxito" });
     });
 };

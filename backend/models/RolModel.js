@@ -27,7 +27,7 @@ Rol.insertarRol = (rolData, callback) => {
     } = rolData;
 
     db.query(sql, [
-       id, nombre_rol, cargo
+       nombre_rol, cargo
     ], (err, result) => {
         if (err) {
             console.error("Error al insertar el rol:", err);
