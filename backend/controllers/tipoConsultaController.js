@@ -2,7 +2,7 @@ const TipoConsulta = require('../models/TipoConsultaModel');
 
 
 
-// Metodo Read: Listar roles (activos)
+// Metodo Read: Listar tipos de consulta
 exports.listarTipoConsulta = (req, res) => {
     TipoConsulta.listarTipoConsulta((err, results) => {
         if (err) {

@@ -9,7 +9,10 @@ const areaRoutes = require("./routes/areaRoutes");
 const especialidadRoutes = require("./routes/especialidadRoutes");
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const tipoConsultaRoutes = require("./routes/tipoConsultaRoutes");
-
+const estadoConsultaRoutes = require("./routes/estadoConsultaRoutes");
+const consultaRoutes = require("./routes/consultaRoutes");
+const detalleConsultaRoutes = require("./routes/detalleConsultaRoutes");
+const historialMedicoRoutes = require("./routes/historialMedicoRoutes");
 
 const app = express();
 
@@ -40,6 +43,11 @@ app.use("/areas", areaRoutes);
 app.use("/especialidades", especialidadRoutes);
 app.use("/usuarios", usuarioRoutes)
 app.use("/tipos-consulta", tipoConsultaRoutes)
+app.use("/estados-consulta", estadoConsultaRoutes)
+app.use("/consultas", consultaRoutes);
+app.use("/detalles-consultas", detalleConsultaRoutes);
+app.use("/historiales-medicos", historialMedicoRoutes);
+
 
 // Iniciar servidor
 app.listen(8081, () => {
