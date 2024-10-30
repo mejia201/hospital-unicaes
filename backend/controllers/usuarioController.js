@@ -1,4 +1,5 @@
 const Usuario = require('../models/UsuarioModel');
+const bcrypt = require('bcrypt');
 
 
 // Metodo Read: Listar usuarios (activos)
@@ -14,18 +15,43 @@ exports.listarUsuarios = (req, res) => {
 
 
 //Metodo Insert
-exports.insertarUsuario = (req, res) => {
+// exports.insertarUsuario = (req, res) => {
+//     const usuarioData = req.body;
+
+//     Usuario.insertarUsuario(usuarioData, (err, result) => {
+//         if (err) {
+//             return res.status(500).json({ message: "Error al registrar el usuario", error: err });
+//         }
+
+//         res.status(200).json({ message: "Usuario registrado" });
+//     });
+// };
+
+//METODO INSERT CON ENCRIPTACION:
+
+exports.insertarUsuario = async (req, res) => {
     const usuarioData = req.body;
 
-    Usuario.insertarUsuario(usuarioData, (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: "Error al registrar el usuario", error: err });
-        }
+    try {
+        // Encriptar la contraseña
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(usuarioData.password, saltRounds);
 
-        res.status(200).json({ message: "Usuario registrado" });
-    });
+        // Reemplazar la contraseña con la encriptada
+        usuarioData.password = hashedPassword;
+
+        // Llamar al método de inserción
+        Usuario.insertarUsuario(usuarioData, (err, result) => {
+            if (err) {
+                return res.status(500).json({ message: "Error al registrar el usuario", error: err });
+            }
+
+            res.status(200).json({ message: "Usuario registrado" });
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error al encriptar la contraseña", error });
+    }
 };
-
 
 
 //Metodo Update

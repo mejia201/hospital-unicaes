@@ -1,21 +1,60 @@
 const Usuario = require('../models/UsuarioModel');
+const bcrypt = require('bcrypt');
 
+
+// const login = (req, res) => {
+//     Usuario.loginUsuario(req.body.email, req.body.password, (err, data) => {
+//         if (err) {
+//             return res.status(500).json({ message: "Error en la consulta", error: err });
+//         }
+//         if (data.length > 0) {
+//             req.session.user = {
+//                 nombre: data[0].nombre,
+//                 apellido: data[0].apellido,
+//                 rol: data[0].nombre_rol
+//             };
+//             console.log('Usuario autenticado', { user: req.session.user });
+//             return res.status(200).json({ message: "Success" });
+//         } else {
+//             return res.status(401).json({ message: "Fail" });
+//         }
+//     });
+// };
+
+//LOGIN CON ENCRIPTACION
 
 const login = (req, res) => {
-    Usuario.loginUsuario(req.body.email, req.body.password, (err, data) => {
+    const { email, password } = req.body;
+
+    Usuario.loginUsuario(email, (err, data) => {
         if (err) {
             return res.status(500).json({ message: "Error en la consulta", error: err });
         }
         if (data.length > 0) {
-            req.session.user = {
-                nombre: data[0].nombre,
-                apellido: data[0].apellido,
-                rol: data[0].nombre_rol
-            };
-            console.log('Usuario autenticado', { user: req.session.user });
-            return res.status(200).json({ message: "Success" });
+            const hashedPassword = data[0].password; 
+
+            bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+                if (err) {
+                    return res.status(500).json({ message: "Error al comparar contraseñas", error: err });
+                }
+
+                if (isMatch) {
+                    // Contraseña correcta, se crea la sesión del usuario
+                    req.session.user = {
+                        nombre: data[0].nombre,
+                        apellido: data[0].apellido,
+                        rol: data[0].nombre_rol
+                    };
+                    console.log('Usuario autenticado', { user: req.session.user });
+                    return res.status(200).json({ message: "Success" });
+                } else {
+                    // Contraseña incorrecta
+                    return res.status(401).json({ message: "Fail: Contraseña incorrecta" });
+                }
+            });
         } else {
-            return res.status(401).json({ message: "Fail" });
+            // No se encontró el usuario con el email proporcionado
+            return res.status(401).json({ message: "Fail: Usuario no encontrado" });
         }
     });
 };
