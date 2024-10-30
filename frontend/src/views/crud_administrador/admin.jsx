@@ -5,12 +5,14 @@ import { Link } from 'react-router-dom';
 import avatar1 from '../../assets/images/user/avatar-1.jpg';
 import avatar2 from '../../assets/images/user/avatar-2.jpg';
 import avatar3 from '../../assets/images/user/avatar-3.jpg';
-
+{
+  /**
 const dashSalesData = [
   { title: 'Daily Sales', amount: '$249.95', icon: 'icon-arrow-up text-c-green', value: 50, class: 'progress-c-theme' },
   { title: 'Monthly Sales', amount: '$2.942.32', icon: 'icon-arrow-down text-c-red', value: 36, class: 'progress-c-theme2' },
   { title: 'Yearly Sales', amount: '$8.638.32', icon: 'icon-arrow-up text-c-green', value: 70, color: 'progress-c-theme' }
-];
+]; */
+}
 
 const DashDefault = () => {
   const tabContent = (
@@ -22,7 +24,7 @@ const DashDefault = () => {
           </Link>
         </div>
         <div className="flex-grow-1 ms-3">
-          <h6 className="m-0 d-inline">Persona Larsen</h6>
+          <h6 className="m-0 d-inline">primero pestañas</h6>
           <span className="float-end d-flex  align-items-center">
             <i className="fa fa-caret-up f-22 m-r-10 text-c-green" />
             3784
@@ -139,7 +141,7 @@ const DashDefault = () => {
         <Col md={6} xl={12}>
           <Card className="Recent-Users widget-focus-lg">
             <Card.Header>
-              <Card.Title as="h5">Recent Users</Card.Title>
+              <Card.Title as="h5">Lista de Administrador</Card.Title>
             </Card.Header>
             <Card.Body className="px-0 py-2">
               <Table responsive hover className="recent-users">
