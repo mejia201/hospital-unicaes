@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ListGroup, Dropdown } from 'react-bootstrap';
+import { ListGroup, Dropdown, Row } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from 'components/AuthContext';
 
@@ -56,20 +56,21 @@ const NavRight = () => {
             <Dropdown.Menu align="end" className="profile-notification">
               <div className="pro-head">
                 <img src={avatar2} className="img-radius" alt="User Profile" />
+
                 {user ? (
                   <>
-                    <span>
-                      {user.nombre} {user.apellido} - {user.rol}
-                    </span>
+                    <span>{user.rol}.</span>
+                    <Row>
+                      <span>
+                        {user.nombre} {user.apellido}.
+                      </span>
+                    </Row>
                   </>
                 ) : (
-                  <span>Cargando...</span>
+                  <span>//</span>
                 )}
-
-                {/* <Link to="#" className="dud-logout" title="Salir" onClick={handleLogout}>
-                  <i className="feather icon-log-out" />
-                </Link>*/}
               </div>
+
               <ListGroup as="ul" bsPrefix=" " variant="flush" className="pro-body">
                 {/* <ListGroup.Item as="li" bsPrefix=" ">
                   <Link to="#" className="dropdown-item" style={{ color: '#3f4d67' }}>

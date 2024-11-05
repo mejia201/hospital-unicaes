@@ -53,31 +53,32 @@ const menuItems = {
       children: [
         {
           id: 'v_administradores',
-          title: 'Gestionar Administradores',
+          title: 'Personal_Médico',
           type: 'item',
-          url: '/crud_administrador',
-          classes: 'nav-item',
-          icon: 'feather icon-user',
-          roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
-        },
-        {
-          id: 'v_ad_medicos',
-          title: 'Gestionar Médicos',
-          type: 'item',
-          url: '/crud_medicos',
-          classes: 'nav-item',
-          icon: 'feather icon-user',
-          roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
-        },
-        {
-          id: 'v_ad_enferos',
-          title: 'Gestionar Enfermeras /os',
-          type: 'item',
-          url: '/crud_enfermeros',
+          url: '/personal',
           classes: 'nav-item',
           icon: 'feather icon-user',
           roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
         }
+        //,
+        // {
+        //   id: 'v_ad_medicos',
+        //   title: 'Gestionar Médicos',
+        //   type: 'item',
+        //   url: '/crud_medicos',
+        //   classes: 'nav-item',
+        //   icon: 'feather icon-user',
+        //   roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
+        // },
+        // {
+        //   id: 'v_ad_enferos',
+        //   title: 'Gestionar Enfermeras /os',
+        //   type: 'item',
+        //   url: '/crud_enfermeros',
+        //   classes: 'nav-item',
+        //   icon: 'feather icon-user',
+        //   roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
+        // }
       ]
     }
   ]

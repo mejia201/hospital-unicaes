@@ -42,24 +42,24 @@ const routes = [
       },
       {
         //rutas del administrador
-        path: '/crud_administrador',
+        path: '/personal',
         exact: true,
         guard: AuthGuard,
-        element: lazy(() => import('./views/crud_administrador/admin'))
+        element: lazy(() => import('./views/administrador/personal'))
       },
       {
         //rutas del administrador
         path: '/crud_medicos',
         exact: true,
         guard: AuthGuard,
-        element: lazy(() => import('./views/crud_administrador/medicos'))
+        element: lazy(() => import('./views/administrador/medicos'))
       },
       {
         //rutas del administrador
         path: '/crud_enfermeros',
         exact: true,
         guard: AuthGuard,
-        element: lazy(() => import('./views/crud_administrador/enfermeros'))
+        element: lazy(() => import('./views/administrador/enfermeros'))
       },
       {
         //rutas de medico - Consulta
