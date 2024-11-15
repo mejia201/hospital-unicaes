@@ -6,7 +6,8 @@ const Especialidad = {};
 
 // Listar areas
 Especialidad.listarEspecialidad= (callback) => {
-    const sql = `SELECT * FROM especialidad WHERE estado = 'activo' `;
+    //const sql = `SELECT * FROM especialidad WHERE estado = 'activo' `;
+    const sql = `SELECT * FROM especialidad`;
 
     db.query(sql, (err, results) => {
         if (err) {

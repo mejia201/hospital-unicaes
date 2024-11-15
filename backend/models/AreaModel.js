@@ -6,7 +6,8 @@ const Area = {};
 
 // Listar areas
 Area.listarArea = (callback) => {
-    const sql = `SELECT * FROM area WHERE estado = 'activo' `;
+    //const sql = `SELECT * FROM area WHERE estado = 'activo' `;
+    const sql = `SELECT * FROM area`;
 
     db.query(sql, (err, results) => {
         if (err) {

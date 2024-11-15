@@ -47,57 +47,59 @@ const NavRight = () => {
 
   return (
     <React.Fragment>
-      <ListGroup as="ul" bsPrefix=" " className="navbar-nav ml-auto" id="navbar-right">
-        <ListGroup.Item as="li" bsPrefix=" ">
-          <Dropdown align={'end'} className="drp-user">
-            <Dropdown.Toggle as={Link} variant="link" to="#" id="dropdown-basic">
-              <i className="icon feather icon-settings" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu align="end" className="profile-notification">
-              <div className="pro-head">
-                <img src={avatar2} className="img-radius" alt="User Profile" />
+      <div>
+        <ListGroup as="ul" bsPrefix=" " className="navbar-nav ml-auto" id="navbar-right">
+          <ListGroup.Item as="li" bsPrefix=" ">
+            <Dropdown align={'end'} className="drp-user">
+              <Dropdown.Toggle as={Link} variant="link" to="#" id="dropdown-basic">
+                <i className="icon feather icon-settings" />
+              </Dropdown.Toggle>
+              <Dropdown.Menu align="end" className="profile-notification">
+                <div className="pro-head">
+                  <img src={avatar2} className="img-radius" alt="User Profile" />
 
-                {user ? (
-                  <>
-                    <span>{user.rol}.</span>
-                    <Row>
-                      <span>
-                        {user.nombre} {user.apellido}.
-                      </span>
-                    </Row>
-                  </>
-                ) : (
-                  <span>//</span>
-                )}
-              </div>
+                  {user ? (
+                    <>
+                      <span>{user.rol}.</span>
+                      <Row>
+                        <span>
+                          {user.nombre} {user.apellido}.
+                        </span>
+                      </Row>
+                    </>
+                  ) : (
+                    <span>//</span>
+                  )}
+                </div>
 
-              <ListGroup as="ul" bsPrefix=" " variant="flush" className="pro-body">
-                {/* <ListGroup.Item as="li" bsPrefix=" ">
+                <ListGroup as="ul" bsPrefix=" " variant="flush" className="pro-body">
+                  {/* <ListGroup.Item as="li" bsPrefix=" ">
                   <Link to="#" className="dropdown-item" style={{ color: '#3f4d67' }}>
                     <i className="feather icon-settings" /> Settings
                   </Link>
                 </ListGroup.Item>*/}
-                <ListGroup.Item as="li" bsPrefix=" ">
-                  <Link to="/perfil" className="dropdown-item" style={{ color: '#3f4d67' }}>
-                    <i className="feather icon-user" /> Perfil
-                  </Link>
-                </ListGroup.Item>
-                <ListGroup.Item as="li" bsPrefix=" ">
-                  <Link to="#" className="dropdown-item" style={{ color: '#3f4d67' }} title="Salir" onClick={handleLogout}>
-                    <i className="feather icon-log-out" />
-                    Cerrar Sesión
-                  </Link>
-                </ListGroup.Item>
-                {/* <ListGroup.Item as="li" bsPrefix=" ">
+                  <ListGroup.Item as="li" bsPrefix=" ">
+                    <Link to="/perfil" className="dropdown-item" style={{ color: '#3f4d67' }}>
+                      <i className="feather icon-user" /> Perfil
+                    </Link>
+                  </ListGroup.Item>
+                  <ListGroup.Item as="li" bsPrefix=" ">
+                    <Link to="#" className="dropdown-item" style={{ color: '#3f4d67' }} title="Salir" onClick={handleLogout}>
+                      <i className="feather icon-log-out" />
+                      Cerrar Sesión
+                    </Link>
+                  </ListGroup.Item>
+                  {/* <ListGroup.Item as="li" bsPrefix=" ">
                   <Link to="#" className="dropdown-item" style={{color: "#3f4d67"}}>
                     <i className="feather icon-lock" /> Lock Screen
                   </Link>
                 </ListGroup.Item>*/}
-              </ListGroup>
-            </Dropdown.Menu>
-          </Dropdown>
-        </ListGroup.Item>
-      </ListGroup>
+                </ListGroup>
+              </Dropdown.Menu>
+            </Dropdown>
+          </ListGroup.Item>
+        </ListGroup>
+      </div>
     </React.Fragment>
   );
 };

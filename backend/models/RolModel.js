@@ -6,7 +6,7 @@ const Rol = {};
 
 // Listar roles
 Rol.listarRoles = (callback) => {
-    const sql = `SELECT * FROM rol WHERE estado = 'activo' `;
+    const sql = `SELECT * FROM rol`;
 
     db.query(sql, (err, results) => {
         if (err) {
