@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Row, Col, Alert, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const JWTLogin = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // Estado para mostrar u ocultar la contraseña
 
   const handleSubmit = async (values, { setSubmitting, setErrors }) => {
     try {
@@ -42,42 +43,40 @@ const JWTLogin = () => {
         setErrors({ submit: 'Credenciales incorrectas' });
       }
     } catch (err) {
-
-     
-       if (err.response && err.response.status === 401) {
+      if (err.response && err.response.status === 401) {
         Swal.fire({
-            title: 'Error',
-            text: 'Credenciales incorrectas!',
-            icon: 'error',
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
+          title: 'Error',
+          text: 'Credenciales incorrectas!',
+          icon: 'error',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
         });
         setErrors({ submit: 'Credenciales incorrectas' });
-
-       } else{
-
-         Swal.fire({
-        title: 'Error',
-        text: 'Ocurrió un error al procesar tu solicitud.',
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000
-      });
-      console.error("Error en la solicitud:", err);
-      setErrors({ submit: 'Ocurrió un error al procesar tu solicitud' });
-        }
-     
+      } else {
+        Swal.fire({
+          title: 'Error',
+          text: 'Ocurrió un error al procesar tu solicitud.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000
+        });
+        console.error("Error en la solicitud:", err);
+        setErrors({ submit: 'Ocurrió un error al procesar tu solicitud' });
+      }
     } finally {
       setSubmitting(false);
     }
   };
 
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <Formik
@@ -106,18 +105,42 @@ const JWTLogin = () => {
             />
             {touched.email && errors.email && <small className="text-danger form-text">{errors.email}</small>}
           </div>
-          <div className="form-group mb-4">
-            <input
-              className="form-control"
-              name="password"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              type="password"
-              placeholder="********"
-              value={values.password}
-            />
-            {touched.password && errors.password && <small className="text-danger form-text">{errors.password}</small>}
-          </div>
+          <div className="form-group mb-4 position-relative">
+          <input
+            className="form-control"
+            name="password"
+            onBlur={handleBlur}
+            onChange={handleChange}
+            type={showPassword ? "text" : "password"}
+            placeholder="********"
+            value={values.password}
+          />
+          
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="position-absolute"
+            style={{
+              right: '10px',
+              top: '50%',
+              transform: 'translateY(-50%)', 
+              border: 'none',
+              background: 'transparent',
+              padding: 0,
+              cursor: 'pointer' 
+            }}
+          >
+            {showPassword ? (
+              <i className="fa fa-eye-slash" aria-hidden="true"></i> 
+            ) : (
+              <i className="fa fa-eye" aria-hidden="true"></i>
+            )}
+          </button>
+          {touched.password && errors.password && (
+            <small className="text-danger form-text">{errors.password}</small>
+          )}
+        </div>
+
 
           {errors.submit && (
             <Col sm={12}>

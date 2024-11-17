@@ -7,77 +7,65 @@ const menuItems = {
       icon: 'icon-navigation',
       children: [
         {
-          //DASHBOARD - LO PUEDEN VER TODOS???
+          //DASHBOARD - TODOS LOS USUARIOS
           id: 'dashboard',
           title: 'Dashboard',
           type: 'item',
           icon: 'feather icon-home',
           url: '/dashboard',
           roles: ['Administrador', 'Médico', 'Enfermero']
-        },
+        }
+      ]
+    },
+    {
+      id: 'crud_admin',
+      title: 'Funciones',
+      type: 'group',
+      icon: 'icon-pages',
+      children: [
         {
-          //VISTA PACIENTES - SOLO ENFERMEROS YA Q LOS CREA
-          id: 'v_pacientes',
-          title: 'Pacientes',
+          id: 'v_administradores',
+          title: 'Gestionar Usuarios',
           type: 'item',
-          url: '/pacientes_index',
+          url: '/usuarios',
           classes: 'nav-item',
-          icon: 'feather icon-user'
-          //roles: ['Enfermero']
-        },
-        {
-          //VISTA SELECCION TRIAGE - SOLO EMFERMEROS
-          id: 'v_seleccion',
-          title: 'Seleccion Triage',
-          type: 'item',
-          icon: 'feather icon-file-text',
-          url: '/seleccion',
-          roles: ['Enfermero']
+          icon: 'feather icon-user',
+          roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
         },
         {
           //VISTA DE CONSULTAS - SOLO LOS MEDICOS
           id: 'v_consultas',
           title: 'Consultas',
           type: 'item',
-          icon: 'feather icon-file-text',
-          url: '/consulta',
+          icon: 'feather icon-clipboard',
+          url: '/consultas',
           roles: ['Médico']
-        }
-      ]
-    },
-    {
-      id: 'crud_admin',
-      title: 'Personal Médico',
-      type: 'group',
-      icon: 'icon-pages',
-      children: [
+        },
+
+        // SOLO EMFERMEROS
+
         {
-          id: 'v_administradores',
-          title: 'Gestionar Administradores',
+        
+          //VISTA SELECCION TRIAGE 
+          id: 'v_seleccion',
+          title: 'Seleccion Triage',
           type: 'item',
-          url: '/crud_administrador',
-          classes: 'nav-item',
-          icon: 'feather icon-user',
-          roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
+          icon: 'feather icon-alert-triangle',
+          url: '/seleccion',
+          roles: ['Enfermero']
         },
         {
-          id: 'v_ad_medicos',
-          title: 'Gestionar Médicos',
+        
+          //AGREGAR PACIENTES 
+          id: 'v_pacientes',
+          title: 'Ingresar Paciente',
           type: 'item',
-          url: '/crud_medicos',
-          classes: 'nav-item',
-          icon: 'feather icon-user',
-          roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
-        },
-        {
-          id: 'v_ad_enferos',
-          title: 'Gestionar Enfermeras /os',
-          type: 'item',
-          url: '/crud_enfermeros',
-          classes: 'nav-item',
-          icon: 'feather icon-user',
-          roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
+          icon: 'feather icon-user-plus',
+          url: '/pacientes',
+          roles: ['Enfermero']
         }
+
+
       ]
     }
   ]

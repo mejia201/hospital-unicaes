@@ -21,25 +21,25 @@ const bcrypt = require('bcrypt');
 //     });
 // };
 
+
 //LOGIN CON ENCRIPTACION
 
 const login = (req, res) => {
-    const { email, password } = req.body;
-
-    Usuario.loginUsuario(email, (err, data) => {
+    Usuario.loginUsuario(req.body.email, (err, data) => {
         if (err) {
             return res.status(500).json({ message: "Error en la consulta", error: err });
         }
-        if (data.length > 0) {
-            const hashedPassword = data[0].password; 
 
-            bcrypt.compare(password, hashedPassword, (err, isMatch) => {
+        if (data && data.length > 0) {
+            const storedPassword = data[0].password;
+
+            // Comparar la contraseña proporcionada con la almacenada
+            bcrypt.compare(req.body.password, storedPassword, (err, isMatch) => {
                 if (err) {
-                    return res.status(500).json({ message: "Error al comparar contraseñas", error: err });
+                    return res.status(500).json({ message: "Error al comparar la contraseña", error: err });
                 }
 
                 if (isMatch) {
-                    // Contraseña correcta, se crea la sesión del usuario
                     req.session.user = {
                         nombre: data[0].nombre,
                         apellido: data[0].apellido,
@@ -48,16 +48,16 @@ const login = (req, res) => {
                     console.log('Usuario autenticado', { user: req.session.user });
                     return res.status(200).json({ message: "Success" });
                 } else {
-                    // Contraseña incorrecta
-                    return res.status(401).json({ message: "Fail: Contraseña incorrecta" });
+                    return res.status(401).json({ message: "Contraseña incorrecta" });
                 }
             });
         } else {
-            // No se encontró el usuario con el email proporcionado
-            return res.status(401).json({ message: "Fail: Usuario no encontrado" });
+            return res.status(401).json({ message: "Usuario no encontrado" });
         }
     });
 };
+
+
 
 const logout = (req, res) => {
     req.session.destroy((err) => {

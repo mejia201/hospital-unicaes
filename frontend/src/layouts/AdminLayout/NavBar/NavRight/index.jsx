@@ -58,24 +58,16 @@ const NavRight = () => {
                 <img src={avatar2} className="img-radius" alt="User Profile" />
                 {user ? (
                   <>
-                    <span>
-                      {user.nombre} {user.apellido} - {user.rol}
-                    </span>
+                 
+                    <span style={{color: "white"}}>
+                      {user.nombre} {user.apellido} </span>                   
                   </>
                 ) : (
                   <span>Cargando...</span>
                 )}
 
-                {/* <Link to="#" className="dud-logout" title="Salir" onClick={handleLogout}>
-                  <i className="feather icon-log-out" />
-                </Link>*/}
               </div>
               <ListGroup as="ul" bsPrefix=" " variant="flush" className="pro-body">
-                {/* <ListGroup.Item as="li" bsPrefix=" ">
-                  <Link to="#" className="dropdown-item" style={{ color: '#3f4d67' }}>
-                    <i className="feather icon-settings" /> Settings
-                  </Link>
-                </ListGroup.Item>*/}
                 <ListGroup.Item as="li" bsPrefix=" ">
                   <Link to="/perfil" className="dropdown-item" style={{ color: '#3f4d67' }}>
                     <i className="feather icon-user" /> Perfil
@@ -87,11 +79,6 @@ const NavRight = () => {
                     Cerrar Sesión
                   </Link>
                 </ListGroup.Item>
-                {/* <ListGroup.Item as="li" bsPrefix=" ">
-                  <Link to="#" className="dropdown-item" style={{color: "#3f4d67"}}>
-                    <i className="feather icon-lock" /> Lock Screen
-                  </Link>
-                </ListGroup.Item>*/}
               </ListGroup>
             </Dropdown.Menu>
           </Dropdown>

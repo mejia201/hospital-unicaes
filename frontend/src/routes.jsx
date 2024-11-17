@@ -35,63 +35,37 @@ const routes = [
         roles: ['Administrador', 'Médico', 'Enfermero']
       },
       {
-        path: '/sample-page',
-        exact: true,
-        guard: AuthGuard,
-        element: lazy(() => import('./views/extra/SamplePage'))
-      },
-      {
         //rutas del administrador
-        path: '/crud_administrador',
+        path: '/usuarios',
         exact: true,
         guard: AuthGuard,
-        element: lazy(() => import('./views/crud_administrador/admin'))
+        element: lazy(() => import('./views/Administrador/Usuarios'))
       },
-      {
-        //rutas del administrador
-        path: '/crud_medicos',
-        exact: true,
-        guard: AuthGuard,
-        element: lazy(() => import('./views/crud_administrador/medicos'))
-      },
-      {
-        //rutas del administrador
-        path: '/crud_enfermeros',
-        exact: true,
-        guard: AuthGuard,
-        element: lazy(() => import('./views/crud_administrador/enfermeros'))
-      },
+  
+
       {
         //rutas de medico - Consulta
-        path: '/consulta',
+        path: '/consultas',
         exact: true,
         guard: AuthGuard,
-        element: lazy(() => import('./views/consulta/index_consulta'))
+        element: lazy(() => import('./views/Medico/Consulta'))
       },
       {
-        //rutas de medico - Consulta
-        path: '/det_consulta',
+        //rutas de enfermeros
+        path: '/pacientes',
         exact: true,
         guard: AuthGuard,
-        element: lazy(() => import('./views/consulta/det_consulta')),
-        roles: ['Médico'] //permiso específico
+        element: lazy(() => import('./views/Enfermero/Pacientes'))
       },
       {
-        //rutas de enfermeros - pacientes, seleccion y archivo
-        path: '/pacientes_index',
-        exact: true,
-        guard: AuthGuard,
-        element: lazy(() => import('./views/pacientes/pacientes_index'))
-      },
-      {
-        //rutas de enfermeros - pacientes, seleccion y archivo
+      
         path: '/seleccion',
         exact: true,
         guard: AuthGuard,
-        element: lazy(() => import('./views/pacientes/seleccion_triage'))
+        element: lazy(() => import('./views/Enfermero/SeleccionTriage'))
       },
       {
-        //rutas de enfermeros - pacientes, seleccion y archivo
+      
         path: '/archivo_form',
         exact: true,
         guard: AuthGuard,

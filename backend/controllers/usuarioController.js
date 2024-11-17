@@ -14,18 +14,19 @@ exports.listarUsuarios = (req, res) => {
 };
 
 
-//Metodo Insert
-// exports.insertarUsuario = (req, res) => {
-//     const usuarioData = req.body;
+//listar usuarios by id
+exports.listarUsuarioById = (req, res) => {
+    const id = req.params.id;
 
-//     Usuario.insertarUsuario(usuarioData, (err, result) => {
-//         if (err) {
-//             return res.status(500).json({ message: "Error al registrar el usuario", error: err });
-//         }
+    Usuario.ListarUsuarioById(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: "Error al listar el usuario, seleccionado", error: err });
+        }
+        res.status(200).json(result);
+    });
+};
 
-//         res.status(200).json({ message: "Usuario registrado" });
-//     });
-// };
+
 
 //METODO INSERT CON ENCRIPTACION:
 
@@ -55,28 +56,58 @@ exports.insertarUsuario = async (req, res) => {
 
 
 //Metodo Update
-exports.actualizarUsuario = (req, res) => {
+// exports.actualizarUsuario = (req, res) => {
+//     const usuarioData = req.body;
+//     const id = req.params.id;
+
+//     Usuario.actualizarUsuario(id, usuarioData, (err, result) => {
+//         if (err) {
+//             return res.status(500).json({ message: "Error al actualizar el usuario", error: err });
+//         }
+//         res.status(200).json({ message: "Usuario actualizado" });
+//     });
+// };
+
+
+exports.actualizarUsuario = async (req, res) => {
     const usuarioData = req.body;
     const id = req.params.id;
+  
+    try {
 
-    Usuario.actualizarUsuario(id, usuarioData, (err, result) => {
+        if (usuarioData.fecha_nacimiento) {
+            usuarioData.fecha_nacimiento = usuarioData.fecha_nacimiento.split("T")[0];
+          }
+          
+      // Encriptar la contraseña si se proporciona una nueva
+      if (usuarioData.password) {
+        const saltRounds = 10;
+        usuarioData.password = await bcrypt.hash(usuarioData.password, saltRounds);
+      }
+  
+      Usuario.actualizarUsuario(id, usuarioData, (err, result) => {
         if (err) {
-            return res.status(500).json({ message: "Error al actualizar el usuario", error: err });
+          return res.status(500).json({ message: "Error al actualizar el usuario", error: err });
         }
         res.status(200).json({ message: "Usuario actualizado" });
-    });
-};
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Error al encriptar la contraseña", error });
+    }
+  };
 
 
 // Cambiar estado del usuario, metodo DELETE
 exports.cambiarEstadoUsuario = (req, res) => {
-    const { id, estado } = req.body;
+    const id = req.params.id;  // Extrayendo el id de la URL
 
-    Usuario.cambiarEstadoUsuario(id, estado, (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: "Error al cambiar estado del usuario", error: err });
+    // Realiza la actualización del estado del usuario
+    Usuario.cambiarEstadoUsuario(id, (error, result) => {
+        if (error) {
+            return res.status(500).json({ message: "Error al cambiar el estado del usuario", error });
         }
-
-        res.status(200).json({ message: "Estado del usuario actualizado" });
+        res.status(200).json({ message: "Estado cambiado a inactivo correctamente" });
     });
 };
+
+
