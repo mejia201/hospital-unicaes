@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, InputGroup, FormControl, Row, Col, Container, Modal, Form } from 'react-bootstrap';
+import { Button, InputGroup, FormControl, Container, Modal, Form, Row, Col } from 'react-bootstrap';
+import Card from '../../components/Card/MainCard';
+
 import DataTable from 'react-data-table-component';
 import { usuarioService } from '../../services/userService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -38,17 +40,9 @@ const Usuarios = () => {
     id_area: '',
   };
 
-  // const [newUser, setNewUser] = useState(initialUserState);
-  // const [editUser, setEditUser] = useState(null);
-
 
   const [userForm, setUserForm] = useState(initialUserState);
-
-
-
   const [errors, setErrors] = useState({});
-
-
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
 
@@ -101,36 +95,16 @@ const Usuarios = () => {
   }, []);
 
 
-  // const handleShowModal = () => setShowModal(true);
-
-  // const handleShowAddModal = () => {
-  //   setNewUser(initialUserState); 
-  //   setEditUser(null);
-  //   setShowModal(true);   
-  // };
-
   const handleShowAddModal = () => {
     setUserForm(initialUserState); 
     setShowModal(true);
   };
   
-  // const handleShowEditModal = async (userId) => {
-  //   try {
-  //     const user = await usuarioService.getUsuarioById(userId);
-     
-  //     const usuario = user[0][0];
-
-  //     setEditUser(usuario);        
-  //     setShowModal(true);         
-  //   } catch (error) {
-  //     console.error('Error al obtener el usuario:', error);
-  //   }
-  // };
 
   const handleShowEditModal = async (userId) => {
     try {
       const user = await usuarioService.getUsuarioById(userId);
-      setUserForm(user[0][0]); // Actualiza userForm con los datos del usuario
+      setUserForm(user[0][0]); 
       setShowModal(true);
     } catch (error) {
       console.error("Error al obtener el usuario:", error);
@@ -139,24 +113,6 @@ const Usuarios = () => {
   
   
   const handleCloseModal = () => setShowModal(false);
-
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   let formattedValue = value;
-
-  //   if (name === "dui" && value.length <= 10) {
-  //     formattedValue = value.replace(/^(\d{8})(\d{1})$/, '$1-$2');
-  //   }
-  //   if (name === "telefono" && value.length <= 9) {
-  //     formattedValue = value.replace(/^(\d{4})(\d{1,4})$/, '$1-$2');
-  //   }
-  //   if (name === "numero_seguro_social" && value.length <= 15) {
-  //     formattedValue = value;
-  //   }
-
-  //   setNewUser({ ...newUser, [name]: formattedValue });
-  // };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -366,185 +322,248 @@ const toggleUserState = async (userId) => {
   }
 
   return (
-    <div className="container">
-      <Card>
-        <Card.Body>
-          <Button onClick={() => handleShowAddModal()}variant="primary">
-            <FontAwesomeIcon icon={faPlus} className="me-1" /> Agregar Usuario
-          </Button>
+    <React.Fragment>
+      <Row>
+        <Col>
+        <Card title="Usuarios" isOption>
 
-          <DataTable
-            columns={columns}
-            data={usuarios.filter(usuario => 
-              (usuario.nombre && usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase())) || 
-              (usuario.apellido && usuario.apellido.toLowerCase().includes(searchTerm.toLowerCase())) || 
-              (usuario.email && usuario.email.toLowerCase().includes(searchTerm.toLowerCase())) 
-            )}
-            
-            pagination
-            striped
-            responsive
-            highlightOnHover
-            dense
-            noHeader
-            subHeader
-            subHeaderComponent={subHeaderComponentMemo}
-            noDataComponent={<div>No hay usuarios disponibles para mostrar.</div>}
-          />
-        </Card.Body>
-      </Card>
+            <Button onClick={() => handleShowAddModal()} variant="primary">
+              <FontAwesomeIcon icon={faPlus} className="me-1" /> Agregar Usuario
+            </Button>
+  
+            <DataTable
+              columns={columns}
+              data={usuarios.filter((usuario) =>
+                (usuario.nombre &&
+                  usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (usuario.apellido &&
+                  usuario.apellido.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                (usuario.email &&
+                  usuario.email.toLowerCase().includes(searchTerm.toLowerCase()))
+              )}
+              pagination
+              striped
+              responsive
+              highlightOnHover
+              dense
+              noHeader
+              subHeader
+              subHeaderComponent={subHeaderComponentMemo}
+              noDataComponent={
+                <div>No hay usuarios disponibles para mostrar.</div>
+              }
+            />
+  
+            <Modal show={showModal} onHide={handleCloseModal} size="xl">
+              <Modal.Header closeButton>
+                <Modal.Title>
+                  {userForm.id_usuario
+                    ? "Editar Usuario"
+                    : "Agregar Usuario"}
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Row>
+                    <Col md={3}>
+                      <Form.Group>
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control
+                          name="nombre"
+                          onChange={handleInputChange}
+                          value={userForm.nombre || ""}
+                          type="text"
+                          isInvalid={!!errors.nombre}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.nombre}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col md={3}>
+                      <Form.Group>
+                        <Form.Label>Apellido</Form.Label>
+                        <Form.Control
+                          name="apellido"
+                          onChange={handleInputChange}
+                          value={userForm.apellido || ""}
+                          type="text"
+                          isInvalid={!!errors.apellido}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.apellido}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col md={3}>
+                      <Form.Group>
+                        <Form.Label>DUI</Form.Label>
+                        <Form.Control
+                          name="dui"
+                          value={userForm.dui || ""}
+                          onChange={handleInputChange}
+                          type="text"
+                          maxLength={10}
+                          isInvalid={!!errors.dui}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.dui}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col md={3}>
+                      <Form.Group>
+                        <Form.Label>Teléfono</Form.Label>
+                        <Form.Control
+                          name="telefono"
+                          value={userForm.telefono || ""}
+                          onChange={handleInputChange}
+                          type="text"
+                          maxLength={9}
+                          isInvalid={!!errors.telefono}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.telefono}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+  
+                  <Row className="mt-2">
+                    <Col md={4}>
+                      <Form.Group>
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                          name="email"
+                          onChange={handleInputChange}
+                          value={userForm.email || ""}
+                          type="email"
+                          isInvalid={!!errors.email}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.email}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                      <Form.Group>
+                        <Form.Label>Contraseña</Form.Label>
+                        <InputGroup>
+                          <Form.Control
+                            name="password"
+                            onChange={handleInputChange}
+                            placeholder={
+                              userForm.id_usuario
+                                ? "Llenar solo si cambia la contraseña"
+                                : ""
+                            }
+                            type={showPassword ? "text" : "password"}
+                            isInvalid={!!errors.password}
+                            required
+                          />
+                          <Button
+                            variant="outline-secondary"
+                            onClick={togglePasswordVisibility}
+                          >
+                            <FontAwesomeIcon
+                              icon={showPassword ? faEyeSlash : faEye}
+                            />
+                          </Button>
+                        </InputGroup>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.password}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                      <Form.Group>
+                        <Form.Label>Dirección</Form.Label>
+                        <Form.Control
+                          name="direccion"
+                          onChange={handleInputChange}
+                          type="text"
+                          value={userForm.direccion || ""}
+                          isInvalid={!!errors.direccion}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.direccion}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
 
-      <Modal show={showModal} onHide={handleCloseModal} size='xl'>
-      <Modal.Header closeButton>
-        {/* <Modal.Title>Agregar Usuario</Modal.Title> */}
-        <Modal.Title>  {userForm.id_usuario ? "Editar Usuario" : "Agregar Usuario"}</Modal.Title>
 
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-          <Row>
-            <Col md={3}>
-              <Form.Group>
-                <Form.Label>Nombre</Form.Label>
-                <Form.Control name="nombre"  onChange={handleInputChange}  value={userForm.nombre || ""}  type='text' isInvalid={!!errors.nombre}  required/>
-                <Form.Control.Feedback type="invalid">{errors.nombre}</Form.Control.Feedback>
-
-              </Form.Group>
-            </Col>
-            <Col md={3}>
-              <Form.Group>
-                <Form.Label>Apellido</Form.Label>
-                <Form.Control name="apellido" onChange={handleInputChange} value={userForm.apellido || ""}  type='text' isInvalid={!!errors.apellido} required />
-                <Form.Control.Feedback type="invalid">{errors.apellido}</Form.Control.Feedback>
-
-              </Form.Group>
-            </Col>
-            <Col md={3}>
-
-                <Form.Group>
-                  <Form.Label>DUI</Form.Label>
-                  <Form.Control name="dui" value={ userForm.dui || ""} onChange={handleInputChange}  type='text' maxLength={10} isInvalid={!!errors.dui} required />
-                  <Form.Control.Feedback type="invalid">{errors.dui}</Form.Control.Feedback>
-
-                </Form.Group>
-
-            </Col>
-
-           <Col md={3}>
-
-                <Form.Group>
-                  <Form.Label>Teléfono</Form.Label>
-                  <Form.Control name="telefono" value={userForm.telefono || ""} onChange={handleInputChange} type='text' maxLength={9} isInvalid={!!errors.telefono} required />
-                  <Form.Control.Feedback type="invalid">{errors.telefono}</Form.Control.Feedback>
-
-                </Form.Group>
-            </Col>
-          </Row>
-
-          <Row className='mt-2'> 
-           
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Email</Form.Label>
-                <Form.Control name="email" onChange={handleInputChange} value={userForm.email || ""} type='email' isInvalid={!!errors.email} required />
-                <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
-
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-
-                <Form.Group>
-                  <Form.Label>Contraseña</Form.Label>
-                  <InputGroup>
-                    <Form.Control
-                      name="password"
-                      onChange={handleInputChange}
-                      placeholder={
-                        userForm.id_usuario 
-                          ? "Llenar solo si cambia la contraseña" 
-                          : ""
-                      }
-                      type={showPassword ? "text" : "password"}
-                      isInvalid={!!errors.password}
-                      required
-                    />
-                    <Button variant="outline-secondary" onClick={togglePasswordVisibility}>
-                      <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
-                    </Button>
-                  </InputGroup>
-                  <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
-
-                </Form.Group>
-            </Col>
-
-               <Col md={4}>
-              <Form.Group>
-                <Form.Label>Dirección</Form.Label>
-                <Form.Control name="direccion" onChange={handleInputChange} type='text' value={userForm.direccion || ""} isInvalid={!!errors.direccion} required/>
-                <Form.Control.Feedback type="invalid">{errors.direccion}</Form.Control.Feedback>
-
-              </Form.Group>
-            </Col>
-
-          </Row>
-
-          <Row className='mt-2'>
+                  <Row className='mt-2'>
          
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Fecha de nacimiento</Form.Label>
-                <Form.Control name="fecha_nacimiento" onChange={handleInputChange} type="date"
-                      value={
-                        userForm.fecha_nacimiento
-                          ? userForm.fecha_nacimiento.split("T")[0] // Extraer solo la fecha
-                          : ""
-                      }
-                   isInvalid={!!errors.fecha_nacimiento} required/>
-                <Form.Control.Feedback type="invalid">{errors.fecha_nacimiento}</Form.Control.Feedback>
+         <Col md={4}>
+           <Form.Group>
+             <Form.Label>Fecha de nacimiento</Form.Label>
+             <Form.Control name="fecha_nacimiento" onChange={handleInputChange} type="date"
+                   value={
+                     userForm.fecha_nacimiento
+                       ? userForm.fecha_nacimiento.split("T")[0] // Extraer solo la fecha
+                       : ""
+                   }
+                isInvalid={!!errors.fecha_nacimiento} required/>
+             <Form.Control.Feedback type="invalid">{errors.fecha_nacimiento}</Form.Control.Feedback>
 
-              </Form.Group>
-            </Col>
-            <Col md={4}>
-            <Form.Group>
-                <Form.Label>Sexo</Form.Label>
-                <Form.Select name="sexo" onChange={handleInputChange} value={userForm.sexo || ""} isInvalid={!!errors.sexo} >
-                  <option value="">Seleccione..</option>
-                    <option value="M">Masculino</option>
-                    <option value="F">Femenino</option>
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">{errors.sexo}</Form.Control.Feedback>
+           </Form.Group>
+         </Col>
+         <Col md={4}>
+         <Form.Group>
+             <Form.Label>Sexo</Form.Label>
+             <Form.Select name="sexo" onChange={handleInputChange} value={userForm.sexo || ""} isInvalid={!!errors.sexo} >
+               <option value="">Seleccione..</option>
+                 <option value="M">Masculino</option>
+                 <option value="F">Femenino</option>
+             </Form.Select>
+             <Form.Control.Feedback type="invalid">{errors.sexo}</Form.Control.Feedback>
 
-              </Form.Group>
-            </Col>
+           </Form.Group>
+         </Col>
 
 
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Número Seguro Social</Form.Label>
-                <Form.Control name="numero_seguro_social" onChange={handleInputChange} type='text' value={userForm.numero_seguro_social || ""} maxLength={15}/>
-              </Form.Group>
-            </Col>
+         <Col md={4}>
+           <Form.Group>
+             <Form.Label>Número Seguro Social</Form.Label>
+             <Form.Control name="numero_seguro_social" onChange={handleInputChange} type='text' value={userForm.numero_seguro_social || ""} maxLength={15}/>
+           </Form.Group>
+         </Col>
 
-          </Row>
+       </Row>
+       
+  
+                  <Row className="mt-2">
+                    <Col md={4}>
+                      <Form.Group>
+                        <Form.Label>Rol</Form.Label>
+                        <Form.Select
+                          name="id_rol"
+                          onChange={handleInputChange}
+                          value={userForm.id_rol || ""}
+                          isInvalid={!!errors.id_rol}
+                          required
+                        >
+                          <option value="">Seleccione un rol</option>
+                          {roles.map((rol) => (
+                            <option key={rol.id_rol} value={rol.id_rol}>
+                              {rol.nombre_rol}
+                            </option>
+                          ))}
+                        </Form.Select>
+                        <Form.Control.Feedback type="invalid">
+                          {errors.id_rol}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
 
-          <Row className='mt-2'>
-           
-            <Col md={4}>
-              <Form.Group>
-                <Form.Label>Rol</Form.Label>
-                <Form.Select name="id_rol" onChange={handleInputChange} value={userForm.id_rol || ""} isInvalid={!!errors.id_rol} required>
-                  <option value="">Seleccione un rol</option>
-                  {roles.map(rol => (
-                    <option key={rol.id_rol} value={rol.id_rol}>
-                      {rol.nombre_rol}
-                    </option>
-                  ))}
-                </Form.Select>
-                <Form.Control.Feedback type="invalid">{errors.id_rol}</Form.Control.Feedback>
-
-              </Form.Group>
-            </Col>
-            <Col md={4}>
+                    <Col md={4}>
               <Form.Group>
                 <Form.Label>Especialidad</Form.Label>
                 <Form.Select name="id_especialidad" onChange={handleInputChange} value={userForm.id_especialidad || ""} isInvalid={!!errors.id_especialidad} required>
@@ -576,23 +595,31 @@ const toggleUserState = async (userId) => {
               </Form.Group>
             </Col>
 
-          </Row>
-
-
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseModal}>
-          Cancelar
-        </Button>
-        <Button variant="primary" onClick={userForm.id_usuario ? handleEditUser : handleSaveUser}>
-         {userForm.id_usuario ? "Actualizar Usuario" : "Guardar Usuario"}
-        </Button>
-
-      </Modal.Footer>
-      </Modal>
-    </div>
+                  </Row>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseModal}>
+                  Cancelar
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={
+                    userForm.id_usuario ? handleEditUser : handleSaveUser
+                  }
+                >
+                  {userForm.id_usuario
+                    ? "Actualizar Usuario"
+                    : "Guardar Usuario"}
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </Card>
+        </Col>
+      </Row>
+    </React.Fragment>
   );
+  
 };
 
 export default Usuarios;

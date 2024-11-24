@@ -41,6 +41,7 @@ const login = (req, res) => {
 
                 if (isMatch) {
                     req.session.user = {
+                        id_usuario:data[0].id_usuario,
                         nombre: data[0].nombre,
                         apellido: data[0].apellido,
                         rol: data[0].nombre_rol

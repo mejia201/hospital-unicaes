@@ -18,6 +18,20 @@ Paciente.listarPacientesActivos = (callback) => {
 };
 
 
+Paciente.ListarPacienteById = (id, callback) => {
+
+    const sql = `CALL sp_ListarPaciente(?)`;
+    
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("Error al listar el paciente:", err);
+            return callback(err, null);
+        }
+        return callback(null, result);
+    });
+
+}
+
 Paciente.insertarPaciente = (pacienteData, callback) => {
     const sql = `CALL sp_InsertarPaciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
@@ -94,16 +108,15 @@ Paciente.actualizarPaciente = (id, pacienteData, callback) => {
 
 
 // Cambiar estado de un paciente, metodo DELETE pero solo cambio de estado,  no elimina registros (no es recomendado)
-Paciente.cambiarEstadoPaciente = (id, nuevoEstado, callback) => {
-    const sql = `UPDATE paciente SET estado = ? WHERE id_paciente = ?`;
-
-    db.query(sql, [nuevoEstado, id], (err, result) => {
-        if (err) {
-            console.error("Error al cambiar estado del paciente:", err);
-            return callback(err, null);
+Paciente.cambiarEstadoPaciente = (id, callback) => {
+    const sql = `UPDATE paciente SET estado = 'inactivo' WHERE id_paciente = ?`;
+    db.query(sql, [id], (error, result) => {
+        if (error) {
+            console.error("Error al cambiar el estado del paciente:", error);
+            callback(error, null);
+        } else {
+            callback(null, result);
         }
-        return callback(null, result);
     });
 };
-
 module.exports = Paciente;

@@ -1,57 +1,56 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8081/usuarios';
+const baseUrl = 'http://localhost:8081/pacientes';
 
 
 
-export const usuarioService = {
-    getAllUsuarios: async () => {
+export const pacienteService = {
+    getPacientes: async () => {
         try {
           const response = await axios.get(`${baseUrl}/listar`, {
             withCredentials: true 
           });
           return response.data;
         } catch (error) {
-          console.error('Error al obtener los usuarios:', error);
+          console.error('Error al obtener los pacientes:', error);
           throw error;
         }
       },
 
-      getUsuarioById: async (id) => {
+      getPacienteById: async (id) => {
         try {
           const response = await axios.get(`${baseUrl}/listar/${id}`, {
             withCredentials: true 
           });
           return response.data;
         } catch (error) {
-          console.error('Error al obtener el usuario:', error);
+          console.error('Error al obtener el paciente:', error);
           throw error;
         }
       },
 
-
-      createUsuario: async (usuarioData) => {
+      createPaciente: async (pacienteData) => {
         try {
-            const response = await axios.post(`${baseUrl}/registrar`, usuarioData, { withCredentials: true });
+            const response = await axios.post(`${baseUrl}/registrar`, pacienteData, { withCredentials: true });
             return response.data;
         } catch (error) {
-            console.error('Error al agregar el usuario:', error);
+            console.error('Error al agregar el paciente:', error);
             throw error;
         }
     },
 
-    updateUsuario: async (id, usuarioData) => {
+    updatePaciente: async (id, pacienteData) => {
         try {
-            const response = await axios.put(`${baseUrl}/actualizar/${id}`, usuarioData, { withCredentials: true });
+            const response = await axios.put(`${baseUrl}/actualizar/${id}`, pacienteData, { withCredentials: true });
             return response.data;
         } catch (error) {
-            console.error('Error al actualizar el usuario:', error);
+            console.error('Error al actualizar el paciente:', error);
             throw error;
         }
     },
 
 
-    changeStateUsuario: async (id) => {
+      changeStatePaciente: async (id) => {
         try {
           const response = await axios.put(
             `${baseUrl}/cambiar-estado/${id}`,
@@ -60,10 +59,10 @@ export const usuarioService = {
           );
           return response.data; 
         } catch (error) {
-          console.error('Error al cambiar el estado del usuario:', error);
+          console.error('Error al cambiar el estado del paciente:', error);
           throw error;
         }
       },
-    
 
-};
+
+}

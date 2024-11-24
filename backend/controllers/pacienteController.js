@@ -13,6 +13,19 @@ exports.listarPacientesActivos = (req, res) => {
 };
 
 
+//listar pacientes by id
+exports.listarPacienteById = (req, res) => {
+    const id = req.params.id;
+
+    Paciente.ListarPacienteById(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: "Error al listar el usuario, seleccionado", error: err });
+        }
+        res.status(200).json(result);
+    });
+};
+
+
 //Metodo Insert
 exports.insertarPaciente = (req, res) => {
     const pacienteData = req.body;
@@ -33,6 +46,11 @@ exports.actualizarPaciente = (req, res) => {
     const pacienteData = req.body;
     const id = req.params.id;
 
+    if (pacienteData.fecha_nacimiento_paciente) {
+        pacienteData.fecha_nacimiento_paciente = pacienteData.fecha_nacimiento_paciente.split("T")[0];
+    }
+    
+
     Paciente.actualizarPaciente(id, pacienteData, (err, result) => {
         if (err) {
             return res.status(500).json({ message: "Error al actualizar el paciente", error: err });
@@ -44,13 +62,13 @@ exports.actualizarPaciente = (req, res) => {
 
 // Cambiar estado de paciente, metodo DELETE
 exports.cambiarEstadoPaciente = (req, res) => {
-    const { id, estado } = req.body;
+    const id = req.params.id;  // Extrayendo el id de la URL
 
-    Paciente.cambiarEstadoPaciente(id, estado, (err, result) => {
-        if (err) {
-            return res.status(500).json({ message: "Error al cambiar estado del paciente", error: err });
+    // Realiza la actualización del estado del paciente
+    Paciente.cambiarEstadoPaciente(id, (error, result) => {
+        if (error) {
+            return res.status(500).json({ message: "Error al cambiar el estado del paciente", error });
         }
-
-        res.status(200).json({ message: "Estado del paciente actualizado" });
+        res.status(200).json({ message: "Estado cambiado a inactivo correctamente" });
     });
 };

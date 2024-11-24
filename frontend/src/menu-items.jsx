@@ -33,7 +33,17 @@ const menuItems = {
           roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
         },
         {
-          //VISTA DE CONSULTAS - SOLO LOS MEDICOS
+          //VISTA DE TOMAR CONSULTAS - SOLO LOS MEDICOS
+          id: 'v_tomar-consulta',
+          title: 'Tomar Consulta',
+          type: 'item',
+          icon: 'feather icon-user-check',
+          url: '/tomar-consulta',
+          roles: ['Médico']
+        },
+
+        {
+          //VISTA PARA EL DETALLE DE LAS CONSULTAS - SOLO LOS MEDICOS
           id: 'v_consultas',
           title: 'Consultas',
           type: 'item',
@@ -42,7 +52,18 @@ const menuItems = {
           roles: ['Médico']
         },
 
+
         // SOLO EMFERMEROS
+        {
+        
+          //AGREGAR PACIENTES 
+          id: 'v_pacientes',
+          title: 'Ingresar Paciente',
+          type: 'item',
+          icon: 'feather icon-user-plus',
+          url: '/pacientes',
+          roles: ['Enfermero']
+        },
 
         {
         
@@ -53,18 +74,8 @@ const menuItems = {
           icon: 'feather icon-alert-triangle',
           url: '/seleccion',
           roles: ['Enfermero']
-        },
-        {
-        
-          //AGREGAR PACIENTES 
-          id: 'v_pacientes',
-          title: 'Ingresar Paciente',
-          type: 'item',
-          icon: 'feather icon-user-plus',
-          url: '/pacientes',
-          roles: ['Enfermero']
         }
-
+      
 
       ]
     }
