@@ -3,8 +3,6 @@
 ==========================  **/
 
 @use "sass:color";
-
-
 body {
   font-family: $theme-font-family;
   font-size: $theme-font-size;
@@ -36,6 +34,73 @@ h5,
 h6 {
   color: $theme-heading-color;
   font-weight: 400;
+}
+
+hr {
+  background-color: #000000;
+  height: 5px;
+  border: none;
+  border-radius: 10px; /* Bordes redondeados */
+}
+.modal-custom {
+  max-width: 70% !important; /* Aumenta el ancho del modal */
+  margin: auto !important;   /*Asegura que esté centrado horizontalmente*/  
+}
+.custom-textarea-container {
+  margin-bottom: 1rem;
+}
+
+.custom-label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.custom-textarea {
+  display: block;
+  width:  100%;
+  padding: 0.5rem;
+  resize: none;
+  border: 1px solid #ccc;
+}
+
+
+/* Establecer el ancho fijo de las columnas */
+.custom-tablesize .rdt_TableCol:nth-child(1) {
+  width: 10px; /* Ancho fijo para la primera columna */
+}
+
+.custom-tablesize .rdt_TableCol:nth-child(2) {
+  width: 150px; /* Ancho fijo para la segunda columna */
+}
+
+.custom-tablesize .rdt_TableCol:nth-child(3) {
+  width: 120px; /* Ancho fijo para la tercera columna */
+}
+
+/* Y así sucesivamente para cada columna... */
+.custom-tablesize .rdt_TableCol:nth-child(4) {
+  width: 120px;
+}
+
+.custom-tablesize .rdt_TableCol:nth-child(5) {
+  width: 200px;
+}
+
+.custom-tablesize .rdt_TableCol:nth-child(6) {
+  width: 10px;
+}
+
+.custom-tablesize .rdt_TableCol:nth-child(7) {
+  width: 150px;
+}
+
+.custom-tablesize .rdt_TableCol:nth-child(8) {
+  width: 100px;
+}
+
+/* Ancho fijo para la columna de Acciones */
+.custom-tablesize .rdt_TableCol:nth-child(12) {
+  width: 150px;
 }
 
 h1 {

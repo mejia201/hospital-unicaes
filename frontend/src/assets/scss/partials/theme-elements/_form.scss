@@ -2,7 +2,11 @@
       Form Componant css start
 ==========================  **/
 
-.custom-select,
+.form-label {
+  color: #111111; /* Cambia al color deseado */
+  font-weight: bold; /* Ejemplo: agregar otro estilo */
+}
+
 .form-control {
   background: $theme-background;
   padding: 10px 20px;

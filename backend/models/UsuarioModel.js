@@ -19,13 +19,12 @@ const Usuario = {};
 
     // Listar usuarios esta es la ruta o la consulta que se hace modificada.
 Usuario.listarUsuarios = (callback) => {
-    const sql = ` SELECT u.id_usuario, u.nombre, u.apellido, u.dui, u.telefono, u.email, u.password, u.direccion, u.fecha_nacimiento, u.sexo, u.numero_seguro_social, u.estado,
-           r.nombre_rol AS rol, e.nombre_especialidad AS especialidad, a.nombre_area AS area
+    const sql = ` SELECT u.id_usuario, u.nombre, u.apellido, u.dui, u.telefono, u.email, u.password, u.direccion, u.fecha_nacimiento, u.sexo, u.numero_seguro_social, u.estado,u.id_rol,
+           r.nombre_rol,u.id_especialidad, e.nombre_especialidad,u.id_area, a.nombre_area
     FROM usuario u
     LEFT JOIN rol r ON u.id_rol = r.id_rol
     LEFT JOIN especialidad e ON u.id_especialidad = e.id_especialidad
-    LEFT JOIN area a ON u.id_area = a.id_area
-    where estado = 'activo';`; //  ELIMINAR ESTA CLAUSULA SI SE QUIERE MOSTRAR LOS ACTIVOS TAMBIEN
+    LEFT JOIN area a ON u.id_area = a.id_area`; //  ELIMINAR ESTA CLAUSULA SI SE QUIERE MOSTRAR LOS ACTIVOS TAMBIEN
     db.query(sql, (err, results) => {
         if (err) {
             console.error("Error al listar los usuarios:", err);
