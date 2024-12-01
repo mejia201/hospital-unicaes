@@ -45,7 +45,7 @@ const menuItems = {
         {
           //VISTA PARA EL DETALLE DE LAS CONSULTAS - SOLO LOS MEDICOS
           id: 'v_consultas',
-          title: 'Consultas',
+          title: 'Tus Consultas',
           type: 'item',
           icon: 'feather icon-clipboard',
           url: '/consultas',
@@ -53,6 +53,17 @@ const menuItems = {
         },
 
 
+        {
+          //VISTA PARA EL DETALLE DE LAS CONSULTAS REALIZADAS - SOLO LOS MEDICOS
+          id: 'v_consultas_realizadas',
+          title: 'Tus Consultas realizadas',
+          type: 'item',
+          icon: 'feather icon-check-square',
+          url: '/consultas-realizadas',
+          roles: ['Médico']
+        },
+
+    
         // SOLO EMFERMEROS
         {
         

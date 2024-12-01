@@ -95,6 +95,20 @@ const TomarConsulta = () => {
         }
       };
 
+
+      const getHours = (estado) => {
+        switch (estado.toLowerCase()) {
+          case 'rojo':
+            return <p>2</p>;
+          case 'amarillo':
+            return <p>4</p>;
+          case 'verde':
+            return <p>8</p>;
+          default:
+            return <p>0</p>;
+        }
+      };
+
       const columns = [
         {
           name: 'Nombre',
@@ -112,21 +126,31 @@ const TomarConsulta = () => {
           sortable: true,
         },
         
-        {
-          name: 'Estado',
-          cell: row => (
-            <Badge bg={getBadgeVariant(row.estado_paciente)}
-            style={{
+           
+      {
+        name: 'Estado',
+        cell: row => (
+          <div className="d-flex align-items-center">
+           
+            <Badge
+              bg={getBadgeVariant(row.estado_paciente)}
+              style={{
                 fontSize: '1rem',
                 padding: '0.4rem 0.6rem',
               }}
-              className="d-flex align-items-center justify-content-center"
+              className="me-2"
             >
-                {getHealthIcon(row.estado_paciente)}
+              {getHealthIcon(row.estado_paciente)}
             </Badge>
-          ),
-          sortable: true,
-        },
+      
+            <span className='mt-3'>
+              {getHours(row.estado_paciente)}
+            </span>
+          </div>
+        ),
+        sortable: true,
+      },
+      
         {
           name: 'Motivo',
           selector: row => row.motivo_consulta,

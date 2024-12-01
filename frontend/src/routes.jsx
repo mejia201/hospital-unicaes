@@ -58,6 +58,16 @@ const routes = [
         element: lazy(() => import('./views/Medico/Consulta'))
       },
 
+
+      {
+        //rutas de medico - Detalles
+        path: '/consultas-realizadas',
+        exact: true,
+        guard: AuthGuard,
+        element: lazy(() => import('./views/Medico/DetallesConsultas'))
+      },
+
+
       {
         //rutas de enfermeros
         path: '/pacientes',

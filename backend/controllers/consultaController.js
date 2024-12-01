@@ -13,6 +13,19 @@ exports.listarConsultasActivos = (req, res) => {
 };
 
 
+exports.listarConsultasById = (req, res) => {
+    const id = req.params.id;
+
+    Consulta.listarConsultasById(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({ message: "Error al listar la consulta, seleccionada", error: err });
+        }
+        res.status(200).json(result[0]); 
+    });
+};
+
+
+
 //Metodo Insert
 exports.insertarConsulta = (req, res) => {
     const consultaData = req.body;

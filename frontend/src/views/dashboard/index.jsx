@@ -18,7 +18,7 @@ const DashDefault = () => {
     <div style={{ textAlign: 'center', marginTop: '15%' }}>
       <h2 style={{color: "#9a2921"}}>{time.toLocaleTimeString()}</h2>
       <h3 className='mt-3'>
-       Bienvenido: {user?.nombre} {user?.apellido} - {user?.rol}
+       Bienvenido {user?.rol}: {user?.nombre} {user?.apellido} 
       </h3>
     </div>
   );

@@ -17,6 +17,21 @@ export const consultaService = {
         }
       },
 
+
+
+      getConsutasById: async (id) => {
+        try {
+          const response = await axios.get(`${baseUrl}/listar/${id}`, {
+            withCredentials: true 
+          });
+          return response.data;
+        } catch (error) {
+          console.error('Error al obtener las consultas:', error);
+          throw error;
+        }
+      },
+
+
       createConsulta: async (consultaData) => {
         try {
             const response = await axios.post(`${baseUrl}/registrar`, consultaData, { withCredentials: true });
@@ -37,6 +52,9 @@ export const consultaService = {
           throw error;
       }
   },
+
+
+  
 
     
 

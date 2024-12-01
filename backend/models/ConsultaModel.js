@@ -6,7 +6,7 @@ const Consulta = {};
 
 // Listar consultas (activas)
 Consulta.listarConsultasActivos = (callback) => {
-    const sql = `SELECT c.id_consulta, tc.nombre_tipo_consulta, p.nombre_paciente, p.apellido_paciente, e.nombre_especialidad, c.id_usuario, c.estado_paciente, c.motivo_consulta, c.fecha_consulta FROM consulta c LEFT JOIN tipo_consulta tc ON c.id_tipo_consulta = tc.id_tipo_consulta LEFT JOIN paciente p ON c.id_paciente = p.id_paciente LEFT JOIN especialidad e ON c.id_especialidad = e.id_especialidad LEFT JOIN usuario u ON c.id_usuario = u.id_usuario WHERE c.estado = 'activo' AND c.id_usuario IS NULL`;
+    const sql = `SELECT c.id_consulta, tc.nombre_tipo_consulta, p.nombre_paciente, p.apellido_paciente, e.nombre_especialidad, c.id_usuario, c.estado_paciente, c.motivo_consulta, c.fecha_consulta FROM consulta c LEFT JOIN tipo_consulta tc ON c.id_tipo_consulta = tc.id_tipo_consulta LEFT JOIN paciente p ON c.id_paciente = p.id_paciente LEFT JOIN especialidad e ON c.id_especialidad = e.id_especialidad LEFT JOIN usuario u ON c.id_usuario = u.id_usuario WHERE c.estado = 'pendiente' AND c.id_usuario IS NULL`;
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -16,6 +16,22 @@ Consulta.listarConsultasActivos = (callback) => {
         return callback(null, results);
     });
 };
+
+
+
+Consulta.listarConsultasById = (id, callback) => {
+
+    const sql = `CALL sp_ListarConsultaById(?)`;
+    
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("Error al listar la consulta:", err);
+            return callback(err, null);
+        }
+        return callback(null, result);
+    });
+
+}
 
 
 Consulta.insertarConsulta = (consultaData, callback) => {

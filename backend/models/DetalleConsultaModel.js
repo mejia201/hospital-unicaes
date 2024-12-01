@@ -18,6 +18,37 @@ DetalleConsulta.listarDetallesConsultasActivas = (callback) => {
 };
 
 
+DetalleConsulta.listarDetalleConsultasById = (id, callback) => {
+
+    const sql = `CALL sp_ListarDetalleConsultaById(?)`;
+    
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("Error al listar los detalles del usuario seleccionado:", err);
+            return callback(err, null);
+        }
+        return callback(null, result);
+    });
+
+}
+
+
+
+DetalleConsulta.listarDetalleConsultasByIdDetalle = (id, callback) => {
+
+    const sql = `CALL GetDetalleConsultaById(?)`;
+    
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("Error al listar los detalles del usuario seleccionado:", err);
+            return callback(err, null);
+        }
+        return callback(null, result);
+    });
+
+}
+
+
 DetalleConsulta.insertarDetalleConsulta = (consultaDetalleData, callback) => {
     const sql = `CALL sp_InsertarDetalleConsulta(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
