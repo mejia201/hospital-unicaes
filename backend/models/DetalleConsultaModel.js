@@ -34,9 +34,9 @@ DetalleConsulta.listarDetalleConsultasById = (id, callback) => {
 
 
 
-DetalleConsulta.listarDetalleConsultasByIdDetalle = (id, callback) => {
+DetalleConsulta.listarDetalleConsultasByIdUsuario = (id, callback) => {
 
-    const sql = `CALL GetDetalleConsultaById(?)`;
+    const sql = `CALL sp_DetalleConsultaById(?)`;
     
     db.query(sql, [id], (err, result) => {
         if (err) {

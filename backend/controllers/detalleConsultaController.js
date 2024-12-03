@@ -24,10 +24,10 @@ exports.listarDetalleConsultasById = (req, res) => {
 };
 
 
-exports.listarDetalleConsultasByIdDetalle = (req, res) => {
+exports.listarDetalleConsultasByIdUsuario = (req, res) => {
     const id = req.params.id;
 
-    DetalleConsulta.listarDetalleConsultasByIdDetalle(id, (err, result) => {
+    DetalleConsulta.listarDetalleConsultasByIdUsuario(id, (err, result) => {
         if (err) {
             return res.status(500).json({ message: "Error al listar el detalle seleccionado", error: err });
         }

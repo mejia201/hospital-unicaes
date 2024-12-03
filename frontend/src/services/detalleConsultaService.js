@@ -20,9 +20,9 @@ export const detalleConsultaService = {
       },
 
 
-      getDetalleConsutasByIdDetalle: async (id) => {
+      getDetalleConsutasByIdUsuario: async (id) => {
         try {
-          const response = await axios.get(`${baseUrl}/listar-detalle/${id}`, {
+          const response = await axios.get(`${baseUrl}/listar-detalles/${id}`, {
             withCredentials: true 
           });
           return response.data;
