@@ -52,7 +52,6 @@ const menuItems = {
           roles: ['Médico']
         },
 
-
         {
           //VISTA PARA EL DETALLE DE LAS CONSULTAS REALIZADAS - SOLO LOS MEDICOS
           id: 'v_consultas_realizadas',
@@ -63,13 +62,11 @@ const menuItems = {
           roles: ['Médico']
         },
 
-    
         // SOLO EMFERMEROS
         {
-        
-          //AGREGAR PACIENTES 
+          //AGREGAR PACIENTES
           id: 'v_pacientes',
-          title: 'Ingresar Paciente',
+          title: 'Pacientes',
           type: 'item',
           icon: 'feather icon-user-plus',
           url: '/pacientes',
@@ -77,17 +74,14 @@ const menuItems = {
         },
 
         {
-        
-          //VISTA SELECCION TRIAGE 
+          //VISTA SELECCION TRIAGE
           id: 'v_seleccion',
           title: 'Seleccion Triage',
           type: 'item',
           icon: 'feather icon-alert-triangle',
           url: '/seleccion',
-          roles: ['Enfermero']
+          roles: ['Enfermero', 'Médico']
         }
-      
-
       ]
     }
   ]
