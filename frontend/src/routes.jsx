@@ -41,7 +41,20 @@ const routes = [
         guard: AuthGuard,
         element: lazy(() => import('./views/Administrador/Usuarios'))
       },
-  
+      {
+        //rutas del administrador
+        path: '/especialidades',
+        exact: true,
+        guard: AuthGuard,
+        element: lazy(() => import('./views/Administrador/Especialidades'))
+      },
+      {
+        //rutas del administrador
+        path: '/areas',
+        exact: true,
+        guard: AuthGuard,
+        element: lazy(() => import('./views/Administrador/Areas'))
+      },
       {
         //rutas de medico - Tomar Consulta
         path: '/tomar-consulta',
@@ -58,7 +71,6 @@ const routes = [
         element: lazy(() => import('./views/Medico/Consulta'))
       },
 
-
       {
         //rutas de medico - Detalles
         path: '/consultas-realizadas',
@@ -66,7 +78,6 @@ const routes = [
         guard: AuthGuard,
         element: lazy(() => import('./views/Medico/DetallesConsultas'))
       },
-
 
       {
         //rutas de enfermeros
@@ -76,14 +87,12 @@ const routes = [
         element: lazy(() => import('./views/Enfermero/Pacientes'))
       },
       {
-      
         path: '/seleccion',
         exact: true,
         guard: AuthGuard,
         element: lazy(() => import('./views/Enfermero/SeleccionTriage'))
       },
       {
-      
         path: '/archivo_form',
         exact: true,
         guard: AuthGuard,

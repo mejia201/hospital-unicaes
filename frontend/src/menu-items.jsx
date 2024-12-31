@@ -33,6 +33,24 @@ const menuItems = {
           roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
         },
         {
+          id: 'v_Especialidades',
+          title: 'Gestionar Especialidades',
+          type: 'item',
+          url: '/especialidades',
+          classes: 'nav-item',
+          icon: 'feather icon-clipboard',
+          roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
+        },
+        {
+          id: 'v_areas',
+          title: 'Gestionar Areas',
+          type: 'item',
+          url: '/areas',
+          classes: 'nav-item',
+          icon: 'feather icon-activity',
+          roles: ['Administrador'] // Solo el rol Administrador puede ver esta opción
+        },
+        {
           //VISTA DE TOMAR CONSULTAS - SOLO LOS MEDICOS
           id: 'v_tomar-consulta',
           title: 'Tomar Consulta',
