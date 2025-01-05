@@ -19,11 +19,9 @@ const NavLogo = () => {
       <div className="navbar-brand header-logo">
         <Link to="#" className="b-brand">
           <div className="b-bg">
-          
             <img src="./src/assets/images/UNICAES_Logo.png" alt="Logo" style={{ width: '30px', height: '30px' }} />
-
           </div>
-          <span className="b-title">Hospital Unicaes</span>
+          <span className="b-title">HOSPITAL UNICAES </span>
         </Link>
         <Link to="#" className={toggleClass.join(' ')} id="mobile-collapse" onClick={() => dispatch({ type: actionType.COLLAPSE_MENU })}>
           <span />

@@ -5,7 +5,7 @@ import { detalleConsultaService } from 'services/detalleConsultaService';
 import { estadoConsultaService } from 'services/estadoConsultaService';
 import Card from '../../components/Card/MainCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserMd } from '@fortawesome/free-solid-svg-icons';
+import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { faHeartbeat, faStethoscope, faEdit, faQuestionCircle, faSmile } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import { Button, InputGroup, FormControl, Container, Badge, Modal, Form } from 'react-bootstrap';
@@ -158,13 +158,13 @@ const Consulta = () => {
   const getHours = (estado) => {
     switch (estado.toLowerCase()) {
       case 'rojo':
-        return <p>2</p>;
+        return <p>2Hr</p>;
       case 'amarillo':
-        return <p>4</p>;
+        return <p>4Hr</p>;
       case 'verde':
-        return <p>8</p>;
+        return <p>8Hr</p>;
       default:
-        return <p>0</p>;
+        return <p>0Hr</p>;
     }
   };
 
@@ -181,7 +181,7 @@ const Consulta = () => {
     },
 
     {
-      name: 'Estado',
+      name: 'Estado Triage',
       cell: (row) => (
         <div className="d-flex align-items-center">
           <Badge
@@ -208,11 +208,11 @@ const Consulta = () => {
     },
 
     {
-      name: 'Acciones',
+      name: 'Crear Detalle Consulta',
       cell: (row) => (
         <div className="btn-group mt-2 mb-2" role="group" aria-label="Detalle actions">
-          <Button variant="primary" onClick={() => handleShowAddModal(row.id_consulta)}>
-            <FontAwesomeIcon icon={faUserMd} className="" />
+          <Button variant="info" onClick={() => handleShowAddModal(row.id_consulta)}>
+            <FontAwesomeIcon icon={faClipboard} className="" />
           </Button>
         </div>
       )
@@ -345,6 +345,7 @@ const Consulta = () => {
                           onChange={handleInputChange}
                           value={detalleForm.motivo_consulta || ''}
                           as="textarea"
+                          rows={4}
                           isInvalid={!!errors.motivo_consulta}
                           required
                         />
@@ -354,41 +355,67 @@ const Consulta = () => {
                   </Row>
 
                   <Row className="mt-3">
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>Presente Enfermedad</Form.Label>
-                        <Form.Control
-                          name="presente_enfermedad"
-                          onChange={handleInputChange}
-                          value={detalleForm.presente_enfermedad || ''}
-                          type="text"
-                          maxLength={500}
-                          isInvalid={!!errors.presente_enfermedad}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.presente_enfermedad}</Form.Control.Feedback>
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>Antecedentes</Form.Label>
-                        <Form.Control
-                          name="antecedentes"
-                          onChange={handleInputChange}
-                          value={detalleForm.antecedentes || ''}
-                          type="text"
-                          maxLength={400}
-                          isInvalid={!!errors.antecedentes}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.antecedentes}</Form.Control.Feedback>
-                      </Form.Group>
-                    </Col>
+                    <Form.Group>
+                      <Form.Label>Presente Enfermedad</Form.Label>
+                      <Form.Control
+                        name="presente_enfermedad"
+                        onChange={handleInputChange}
+                        value={detalleForm.presente_enfermedad || ''}
+                        as="textarea"
+                        rows={4}
+                        isInvalid={!!errors.presente_enfermedad}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">{errors.presente_enfermedad}</Form.Control.Feedback>
+                    </Form.Group>
+                  </Row>
+                  <Row className="mt-3">
+                    <Form.Group>
+                      <Form.Label>Antecedentes</Form.Label>
+                      <Form.Control
+                        name="antecedentes"
+                        onChange={handleInputChange}
+                        value={detalleForm.antecedentes || ''}
+                        as="textarea"
+                        rows={4}
+                        isInvalid={!!errors.antecedentes}
+                        required
+                      />
+                      <Form.Control.Feedback type="invalid">{errors.antecedentes}</Form.Control.Feedback>
+                    </Form.Group>
                   </Row>
 
                   <Row className="mt-3">
                     <Col md={3}>
                       <Form.Group>
+                        <Form.Label>Presión Arterial (mmHg)</Form.Label>
+                        <Form.Control
+                          name="presion_arterial"
+                          onChange={(e) => {
+                            let inputValue_pa = e.target.value;
+
+                            // Permitir solo números y el carácter '/'
+                            inputValue_pa = inputValue_pa.replace(/[^0-9/]/g, '');
+
+                            // Asegurar que solo haya un '/'
+                            const parts = inputValue_pa.split('/');
+                            if (parts.length > 2) {
+                              inputValue_pa = parts[0] + '/' + parts[1];
+                            }
+
+                            handleInputChange({
+                              target: { name: 'presion_arterial', value: inputValue_pa }
+                            });
+                          }}
+                          value={detalleForm.presion_arterial || ''}
+                          type="text" // Mantener como texto para permitir '/'
+                          maxLength={7} // Limitar longitud máxima para algo como '999/999'
+                          isInvalid={!!errors.presion_arterial}
+                        />
+                        <Form.Control.Feedback type="invalid">{errors.presion_arterial}</Form.Control.Feedback>
+                      </Form.Group>
+
+                      {/* <Form.Group>
                         <Form.Label>Presión Arterial</Form.Label>
                         <Form.Control
                           name="presion_arterial"
@@ -399,10 +426,41 @@ const Consulta = () => {
                           isInvalid={!!errors.presion_arterial}
                         />
                         <Form.Control.Feedback type="invalid">{errors.presion_arterial}</Form.Control.Feedback>
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
                     <Col md={3}>
                       <Form.Group>
+                        <Form.Label>Frecuencia Cardíaca (lpm)</Form.Label>
+                        <Form.Control
+                          name="frecuencia_cardiaca"
+                          onChange={(e) => {
+                            let inputValue_fc = e.target.value;
+
+                            // Permitir solo números y un único punto decimal
+                            inputValue_fc = inputValue_fc.replace(/[^0-9.]/g, ''); // Permitir dígitos y '.'
+                            // if ((inputValue.match(/\./g) || []).length > 1) {
+                            //   // Si hay más de un punto decimal, eliminar el último
+                            //   inputValue = inputValue.substring(0, inputValue.length - 1);
+                            // }
+
+                            // Agregar "lpm" si no está vacío
+                            if (inputValue_fc !== '') {
+                              inputValue_fc += ' Lpm';
+                            }
+
+                            handleInputChange({
+                              target: { name: 'frecuencia_cardiaca', value: inputValue_fc }
+                            });
+                          }}
+                          maxLength={7} // Limitar longitud del input
+                          value={detalleForm.frecuencia_cardiaca || ''}
+                          type="text" // Cambiado a texto para permitir "lpm"
+                          isInvalid={!!errors.frecuencia_cardiaca}
+                        />
+                        <Form.Control.Feedback type="invalid">{errors.frecuencia_cardiaca}</Form.Control.Feedback>
+                      </Form.Group>
+
+                      {/* <Form.Group>
                         <Form.Label>Frecuencia Cardíaca</Form.Label>
                         <Form.Control
                           name="frecuencia_cardiaca"
@@ -413,17 +471,25 @@ const Consulta = () => {
                           isInvalid={!!errors.frecuencia_cardiaca}
                         />
                         <Form.Control.Feedback type="invalid">{errors.frecuencia_cardiaca}</Form.Control.Feedback>
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
                     <Col md={3}>
                       <Form.Group>
-                        <Form.Label>Saturación de Oxígeno</Form.Label>
+                        <Form.Label>Saturación de Oxígeno (%)</Form.Label>
                         <Form.Control
                           name="saturacion_oxigeno"
-                          onChange={handleInputChange}
+                          onChange={(e) => {
+                            let inputValue_so = e.target.value.replace(/\D/g, ''); // Permitir solo números
+                            if (inputValue_so !== '') {
+                              inputValue_so += '%'; // Agregar el símbolo % si el campo no está vacío
+                            }
+                            handleInputChange({
+                              target: { name: 'saturacion_oxigeno', value: inputValue_so }
+                            });
+                          }}
+                          maxLength={4}
                           value={detalleForm.saturacion_oxigeno || ''}
-                          type="number"
-                          step="0.1"
+                          type="text" // Cambiado a texto para permitir el símbolo %
                           isInvalid={!!errors.saturacion_oxigeno}
                         />
                         <Form.Control.Feedback type="invalid">{errors.saturacion_oxigeno}</Form.Control.Feedback>
@@ -431,13 +497,26 @@ const Consulta = () => {
                     </Col>
                     <Col md={3}>
                       <Form.Group>
-                        <Form.Label>Temperatura</Form.Label>
+                        <Form.Label>Temperatura (°C)</Form.Label>
                         <Form.Control
                           name="temperatura"
-                          onChange={handleInputChange}
+                          onChange={(e) => {
+                            let inputValue_temp = e.target.value;
+
+                            // Permitir solo números y un único punto decimal
+                            inputValue_temp = inputValue_temp.replace(/[^0-9.]/g, ''); // Permitir dígitos y '.'
+                            // Agregar "°C" si no está vacío
+                            if (inputValue_temp !== '') {
+                              inputValue_temp += '°C';
+                            }
+
+                            handleInputChange({
+                              target: { name: 'temperatura', value: inputValue_temp }
+                            });
+                          }}
+                          maxLength={6} // Para limitar la longitud (incluyendo números, punto y "°C")
                           value={detalleForm.temperatura || ''}
-                          type="number"
-                          step="0.1"
+                          type="text" // Cambiado a texto para permitir "°C"
                           isInvalid={!!errors.temperatura}
                         />
                         <Form.Control.Feedback type="invalid">{errors.temperatura}</Form.Control.Feedback>
@@ -448,20 +527,81 @@ const Consulta = () => {
                   <Row className="mt-3">
                     <Col md={3}>
                       <Form.Group>
+                        <Form.Label>Peso (kg)</Form.Label>
+                        <Form.Control
+                          name="peso"
+                          onChange={(e) => {
+                            let inputValue_p = e.target.value;
+
+                            // Permitir solo números y un único punto decimal
+                            inputValue_p = inputValue_p.replace(/[^0-9.]/g, ''); // Permitir dígitos y '.'
+                            // if ((inputValue.match(/\./g) || []).length > 1) {
+                            //   // Si hay más de un punto decimal, eliminar el último
+                            //   inputValue = inputValue.substring(0, inputValue.length - 1);
+                            // }
+
+                            // Agregar "kg" si no está vacío
+                            if (inputValue_p !== '') {
+                              inputValue_p += 'kg';
+                            }
+
+                            handleInputChange({
+                              target: { name: 'peso', value: inputValue_p }
+                            });
+                          }}
+                          value={detalleForm.peso || ''}
+                          type="text" // Cambiado a texto para permitir "kg"
+                          maxLength={10} // Limitar la longitud máxima
+                          isInvalid={!!errors.peso}
+                        />
+                        <Form.Control.Feedback type="invalid">{errors.peso}</Form.Control.Feedback>
+                      </Form.Group>
+
+                      {/* <Form.Group>
                         <Form.Label>Peso</Form.Label>
                         <Form.Control
                           name="peso"
                           onChange={handleInputChange}
                           value={detalleForm.peso || ''}
                           type="number"
-                          step="0.1"
                           isInvalid={!!errors.peso}
                         />
                         <Form.Control.Feedback type="invalid">{errors.peso}</Form.Control.Feedback>
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
                     <Col md={3}>
                       <Form.Group>
+                        <Form.Label>Altura (m)</Form.Label>
+                        <Form.Control
+                          name="altura"
+                          onChange={(e) => {
+                            let inputValue_a = e.target.value;
+
+                            // Permitir solo números y un único punto decimal
+                            inputValue_a = inputValue_a.replace(/[^0-9.]/g, ''); // Permitir dígitos y '.'
+                            // if ((inputValue.match(/\./g) || []).length > 1) {
+                            //   // Si hay más de un punto decimal, eliminar el último
+                            //   inputValue = inputValue.substring(0, inputValue.length - 1);
+                            // }
+
+                            // Agregar "m" si no está vacío
+                            if (inputValue_a !== '') {
+                              inputValue_a += 'm';
+                            }
+
+                            handleInputChange({
+                              target: { name: 'altura', value: inputValue_a }
+                            });
+                          }}
+                          value={detalleForm.altura || ''}
+                          type="text" // Cambiado a texto para permitir "m"
+                          maxLength={5} // Limitar la longitud máxima
+                          isInvalid={!!errors.altura}
+                        />
+                        <Form.Control.Feedback type="invalid">{errors.altura}</Form.Control.Feedback>
+                      </Form.Group>
+
+                      {/* <Form.Group>
                         <Form.Label>Altura</Form.Label>
                         <Form.Control
                           name="altura"
@@ -472,22 +612,9 @@ const Consulta = () => {
                           isInvalid={!!errors.altura}
                         />
                         <Form.Control.Feedback type="invalid">{errors.altura}</Form.Control.Feedback>
-                      </Form.Group>
+                      </Form.Group> */}
                     </Col>
-                    <Col md={6}>
-                      <Form.Group>
-                        <Form.Label>Diagnóstico</Form.Label>
-                        <Form.Control
-                          name="diagnostico"
-                          onChange={handleInputChange}
-                          value={detalleForm.diagnostico || ''}
-                          as="textarea"
-                          isInvalid={!!errors.diagnostico}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.diagnostico}</Form.Control.Feedback>
-                      </Form.Group>
-                    </Col>
+                    <Col md={6}></Col>
                   </Row>
 
                   <Row className="mt-3">
@@ -499,6 +626,7 @@ const Consulta = () => {
                           onChange={handleInputChange}
                           value={detalleForm.observaciones || ''}
                           as="textarea"
+                          rows={4}
                           isInvalid={!!errors.observaciones}
                         />
                         <Form.Control.Feedback type="invalid">{errors.observaciones}</Form.Control.Feedback>
@@ -514,21 +642,37 @@ const Consulta = () => {
                           name="examen_fisico"
                           onChange={handleInputChange}
                           value={detalleForm.examen_fisico || ''}
-                          type="text"
-                          maxLength={800}
+                          as="textarea"
+                          rows={4}
                           isInvalid={!!errors.examen_fisico}
                         />
                         <Form.Control.Feedback type="invalid">{errors.examen_fisico}</Form.Control.Feedback>
                       </Form.Group>
                     </Col>
                   </Row>
+                  <Row>
+                    <Form.Group>
+                      <Form.Label>Diagnóstico</Form.Label>
+                      <Form.Control
+                        name="diagnostico"
+                        onChange={handleInputChange}
+                        value={detalleForm.diagnostico || ''}
+                        as="textarea"
+                        rows={4}
+                        isInvalid={!!errors.diagnostico}
+                        required
+                      />
+
+                      <Form.Control.Feedback type="invalid">{errors.diagnostico}</Form.Control.Feedback>
+                    </Form.Group>
+                  </Row>
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseModal}>
+                <Button variant="primary" onClick={handleCloseModal}>
                   Cancelar
                 </Button>
-                <Button variant="primary" onClick={handleSaveDetalle}>
+                <Button variant="info" onClick={handleSaveDetalle}>
                   Guardar Detalle
                 </Button>
               </Modal.Footer>

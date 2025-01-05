@@ -89,13 +89,13 @@ const TomarConsulta = () => {
   const getHours = (estado) => {
     switch (estado.toLowerCase()) {
       case 'rojo':
-        return <p>2</p>;
+        return <p>2 Hr</p>;
       case 'amarillo':
-        return <p>4</p>;
+        return <p>4 Hr</p>;
       case 'verde':
-        return <p>8</p>;
+        return <p>8 Hr</p>;
       default:
-        return <p>0</p>;
+        return <p>0 Hr</p>;
     }
   };
 
@@ -144,10 +144,10 @@ const TomarConsulta = () => {
     },
 
     {
-      name: 'Acciones',
+      name: 'Tomar Consulta',
       cell: (row) => (
         <div className="mt-2 mb-2" aria-label="Consultas actions">
-          <Button variant="primary" onClick={() => toggleTomarConsulta(row.id_consulta)}>
+          <Button variant="info" onClick={() => toggleTomarConsulta(row.id_consulta)}>
             <FontAwesomeIcon icon={faClipboard} className="" />
           </Button>
         </div>
@@ -182,7 +182,7 @@ const TomarConsulta = () => {
     <React.Fragment>
       <Row>
         <Col>
-          <Card title="Tomar Consulta" isOption>
+          <Card title="Seleccionar y realizar una atencion médica" isOption>
             <DataTable
               columns={columns}
               data={consultas.filter(

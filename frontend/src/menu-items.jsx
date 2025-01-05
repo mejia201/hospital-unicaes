@@ -52,8 +52,8 @@ const menuItems = {
         },
         {
           //VISTA DE TOMAR CONSULTAS - SOLO LOS MEDICOS
-          id: 'v_tomar-consulta',
-          title: 'Tomar Consulta',
+          id: 'v_atencion_medica',
+          title: 'Atención Médica',
           type: 'item',
           icon: 'feather icon-user-check',
           url: '/tomar-consulta',

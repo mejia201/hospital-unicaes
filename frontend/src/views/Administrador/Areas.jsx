@@ -6,9 +6,9 @@ import DataTable from 'react-data-table-component';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faEdit, faToggleOn, faEye, faEyeSlash, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
-import { data } from 'jquery';
+//import { data } from 'jquery';
 import { areaService } from 'services/areaService';
-import { area } from 'd3';
+//import { area } from 'd3';
 
 const Areas = () => {
   const [loading, setLoading] = useState(true);
@@ -165,9 +165,7 @@ const Areas = () => {
     }
   };
 
-  //Columnas especialidad
   const columns_areas = [
-    // { name: 'ID', selector: (row) => `${row.id_area}` },
     { name: 'Nombre del Área', selector: (row) => `${row.nombre_area}`, sortable: true },
     { name: 'Estado', selector: (row) => `${row.estado}` },
     {
@@ -193,7 +191,6 @@ const Areas = () => {
         <InputGroup>
           <FormControl placeholder="Buscar" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         </InputGroup>
-        {/* <Row className="justify-content-end"></Row> */}
       </Container>
     );
   }, [searchTerm]);
@@ -215,23 +212,16 @@ const Areas = () => {
               {subHeaderComponentMemo}
             </Col>
           </Row>
-          {/* <Button onClick={() => handleShowAddModal()} variant="primary">
-              <FontAwesomeIcon icon={faPlus} className="me-1" /> Agregar Especialidad
-            </Button> */}
           <DataTable
             className="mt-4"
             columns={columns_areas}
-            data={area.filter((areas) => areas.nombre_area.toLowerCase().includes(searchTerm.toLowerCase()))}
+            data={Areas.filter((areas) => areas.nombre_area.toLowerCase().includes(searchTerm.toLowerCase()))}
             pagination
             striped
             responsive
             highlightOnHover
             dense
             noHeader
-            // subHeader
-            // subHeaderComponent={subHeaderComponentMemo}
-            paginationPerPage={10} // Número de líneas por página
-            paginationRowsPerPageOptions={[5, 10, 20, 30]} // Opciones de líneas por página
             noDataComponent={<div>No hay usuarios disponibles para mostrar.</div>}
           />
         </Card>

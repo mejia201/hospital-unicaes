@@ -69,7 +69,6 @@ const Usuarios = () => {
       }
     };
 
-    //NECESITOOE ESTOS
     const loadEspecialidades = async () => {
       try {
         const data = await specialtyService.getEspecialidades();
@@ -111,18 +110,6 @@ const Usuarios = () => {
       console.error('Error al obtener el usuario:', error);
     }
   };
-
-  // //carga la esp por id y  Muestra el modal editar ESPECIALIDAD
-  // const handleShowEditModal_esp = async (Id) => {
-  //   try {
-  //     const user_esp = await specialtyService.getEspecialidadById(Id);
-  //     setUserForm(user_esp[0][0]);
-  //     setShowModal_esp(true);
-  //     // console.log('Usuario ID:', Usuarios.id_usuario);
-  //   } catch (error) {
-  //     console.error('web: Error al obtener la especialidad:', error);
-  //   }
-  // };
 
   //cerrar modales emergentes
   const handleCloseModal = () => {
@@ -277,7 +264,6 @@ const Usuarios = () => {
         <InputGroup>
           <FormControl placeholder="Buscar" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         </InputGroup>
-        {/* <Row className="justify-content-end"></Row> */}
       </Container>
     );
   }, [searchTerm]);
@@ -316,8 +302,6 @@ const Usuarios = () => {
             highlightOnHover
             dense
             noHeader
-            // subHeader
-            // subHeaderComponent={subHeaderComponentMemo}
             noDataComponent={<div>No hay usuarios disponibles para mostrar.</div>}
             expandableRows // Habilitar filasexpandibles
             expandableRowsComponent={({ data }) => (
@@ -454,11 +438,9 @@ const Usuarios = () => {
                     value={userForm.dui || ''}
                     onChange={(e) => {
                       const value = e.target.value;
-                      const regex = /^[0-9]{0,8}(-[0-9]{0,1})?$/; // Regex para DUI
-
-                      // Solo actualiza el estado si el valor es válido
+                      const regex = /^[0-9]{0,8}(-[0-9]{0,1})?$/;
                       if (regex.test(value)) {
-                        handleInputChange(e); // Permite actualizar solo si pasa la validación
+                        handleInputChange(e);
                       }
                     }}
                     maxLength={10}
@@ -475,9 +457,9 @@ const Usuarios = () => {
                     name="telefono"
                     value={userForm.telefono || ''}
                     onChange={(e) => {
-                      const regex = /^[0-9]{0,4}(-?[0-9]{0,4})$/; // Permite 4 dígitos, guion opcional y otros 4 dígitos
+                      const regex = /^[0-9]{0,4}(-?[0-9]{0,4})$/;
                       if (regex.test(e.target.value)) {
-                        handleInputChange(e); // Llama a la función para manejar el cambio si pasa la validación
+                        handleInputChange(e);
                       }
                     }}
                     type="text"

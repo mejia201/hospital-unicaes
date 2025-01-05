@@ -195,7 +195,6 @@ const Especialidades = () => {
         <InputGroup>
           <FormControl placeholder="Buscar" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
         </InputGroup>
-        {/* <Row className="justify-content-end"></Row> */}
       </Container>
     );
   }, [searchTerm]);
