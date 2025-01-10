@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { Button, InputGroup, FormControl, Container, Badge, Modal, Form } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { useAuth } from 'components/AuthContext';
+import { jsPDF } from 'jspdf';
+import logo from '../../assets/images/UNICAES_Logo.png';
 
 const Consulta = () => {
   const [consultas, setConsultas] = useState([]);
@@ -203,8 +205,7 @@ const Consulta = () => {
 
     {
       name: 'Motivo',
-      selector: (row) => row.motivo_consulta,
-      sortable: true
+      selector: (row) => (row.motivo_consulta.length > 0 ? row.motivo_consulta.split(' ').slice(0, 5).join('') + '...' : 'N/A')
     },
 
     {
@@ -242,11 +243,111 @@ const Consulta = () => {
     return <p>Cargando tus consultas...</p>;
   }
 
+  const handleGeneratePDF = async (id_usuario) => {
+    try {
+      const detalle = await detalleConsultaService.getDetalleConsutasByIdDetallePDF(user.id_usuario);
+
+      if (!detalle) {
+        Swal.fire('Advertencia', 'No se encontró información para esta consulta', 'warning');
+        return;
+      }
+
+      const doc = new jsPDF();
+      const pageHeight = doc.internal.pageSize.height;
+      const marginLeft = 25;
+      let currentY = 20;
+
+      // Título principal en negrita
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text('Detalle de Consulta Médica', marginLeft, currentY);
+      doc.addImage(logo, 'PNG', 170, 7, 20, 20);
+      currentY += 20;
+
+      // Subtítulos e información del paciente en negrita
+      doc.setFontSize(11);
+      doc.text(`Nombre: ${detalle.nombre_paciente}`, marginLeft, currentY);
+      currentY += 10;
+      doc.text(`Expediente: ${detalle.n_expediente}`, marginLeft, currentY);
+      doc.text(`Fecha: ${new Date(detalle.fecha).toISOString().split('T')[0]}`, 160, currentY);
+      currentY += 10;
+
+      // Información de la consulta (subtítulos en negrita)
+      // doc.text('Información de la Consulta:', marginLeft, currentY);
+
+      doc.text(`Tipo de Consulta: ${detalle.tipo_consulta}`, marginLeft, currentY);
+      doc.text(`Estado Triage: ${detalle.estado_paciente}`, 95, currentY);
+      doc.text(`Estado Consulta: ${detalle.estado_consulta}`, 140, currentY);
+      currentY += 20;
+
+      const detallesMedicos = [
+        { label: 'Motivo Enfermería', value: detalle.motivo_enfermeria },
+        { label: 'Motivo Consulta', value: detalle.motivo_consulta_detalle },
+        { label: 'Presente Enfermedad', value: detalle.presente_enfermedad },
+        { label: 'Antecedentes', value: detalle.antecedentes },
+        { label: 'Presión Arterial', value: detalle.presion_arterial },
+        { label: 'Frecuencia Cardíaca', value: detalle.frecuencia_cardiaca },
+        { label: 'Saturación de Oxígeno', value: detalle.saturacion_oxigeno },
+        { label: 'Temperatura', value: detalle.temperatura },
+        { label: 'Peso', value: detalle.peso },
+        { label: 'Altura', value: detalle.altura },
+        { label: 'Diagnóstico', value: detalle.diagnostico },
+        { label: 'Observaciones', value: detalle.observaciones },
+        { label: 'Examen Físico', value: detalle.examen_fisico }
+      ];
+
+      doc.setFont('helvetica', 'normal');
+      detallesMedicos.forEach((detalle) => {
+        const text = `${detalle.label}: ${detalle.value}`;
+        const lines = doc.splitTextToSize(text, 175);
+
+        lines.forEach((line) => {
+          if (currentY + 15 > pageHeight) {
+            doc.addPage();
+            currentY = 20;
+          }
+          doc.text(line, marginLeft, currentY);
+          currentY += 10;
+        });
+      });
+
+      // detallesMedicos.forEach((detalle) => {
+      //   const labelText = `${detalle.label}: `;
+      //   const valueText = `${detalle.value}`;
+      //   const labelWidth = doc.getTextWidth(labelText);
+
+      //   // Agregar el label en negrita
+      //   doc.setFont('helvetica', 'bold');
+      //   doc.text(labelText, marginLeft, currentY);
+
+      //   // Agregar el valor en texto normal justo después del label
+      //   doc.setFont('helvetica', 'normal');
+      //   doc.text(valueText, marginLeft + labelWidth, currentY);
+
+      //   currentY += 10;
+
+      //   // Salto de página si es necesario
+      //   if (currentY + 10 > pageHeight) {
+      //     doc.addPage();
+      //     currentY = 20;
+      //   }
+
+      doc.save(`Detalle_Consulta_${detalle.n_expediente}.pdf`);
+      Swal.fire('Éxito', 'El PDF se generó correctamente', 'success');
+    } catch (error) {
+      console.error('web: Error al generar el PDF:', error);
+      Swal.fire('Error', 'No se pudo generar el PDF', 'error');
+    }
+  };
+
   return (
     <React.Fragment>
       <Row>
         <Col>
           <Card title="Tus Consultas" isOption>
+            <Button variant="primary" onClick={() => handleGeneratePDF(user.id_usuario)}>
+              Generar Detalle
+            </Button>
             <DataTable
               columns={columns}
               data={consultas.filter(
@@ -292,10 +393,10 @@ const Consulta = () => {
                       </div>
                     </Col>
 
-                    <Col md={4}>
+                    <Col md={6}>
                       <div>
                         <label>Motivo:</label>
-                        <textarea className="custom-textarea" rows="3" readOnly>
+                        <textarea className="custom-textarea" rows="4" readOnly>
                           {data.motivo_consulta}
                         </textarea>
                       </div>
@@ -672,8 +773,16 @@ const Consulta = () => {
                 <Button variant="primary" onClick={handleCloseModal}>
                   Cancelar
                 </Button>
-                <Button variant="info" onClick={handleSaveDetalle}>
-                  Guardar Detalle
+                <Button
+                  variant="info"
+                  onClick={() => {
+                    handleSaveDetalle(); // Guarda el detalle
+                    setTimeout(() => {
+                      handleGeneratePDF(user.id_usuario); // Genera el PDF después de 1 segundo
+                    }, 2000); // Espera 1 segundo (1000 milisegundos)
+                  }}
+                >
+                  Guardar y Generar Detalle
                 </Button>
               </Modal.Footer>
             </Modal>

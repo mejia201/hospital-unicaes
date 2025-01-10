@@ -5,7 +5,7 @@ import Card from '../../components/Card/MainCard';
 import DataTable from 'react-data-table-component';
 import { usuarioService } from '../../services/userService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faToggleOn, faEye, faEyeSlash, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faToggleOn, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { roleService } from 'services/roleService';
 import { specialtyService } from 'services/specialtyService';
 import { areaService } from 'services/areaService';
@@ -15,12 +15,9 @@ const Usuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [showModal_user, setShowModal_user] = useState(false);
-  //modales emergentes
-  const [showModal_esp, setShowModal_esp] = useState(false);
-  const [showModal_area, setShowModal_area] = useState(false);
-
+  const [showModal, setShowModal] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
   const [roles, setRoles] = useState([]);
   const [especialidades, setEspecialidades] = useState([]);
   const [areas, setAreas] = useState([]);
@@ -35,13 +32,13 @@ const Usuarios = () => {
     direccion: '',
     fecha_nacimiento: '',
     sexo: '',
-    numero_seguro_social: ''
-    // id_rol: '',
-    // id_especialidad: '',
-    // id_area: '',
+    numero_seguro_social: '',
+    id_rol: '',
+    id_especialidad: '',
+    id_area: '',
     /////////////
-    // nombre_especialidad: '',
-    // nombre_area: ''
+    nombre_especialidad: '',
+    nombre_area: ''
   };
 
   const [userForm, setUserForm] = useState(initialUserState);
@@ -69,6 +66,7 @@ const Usuarios = () => {
       }
     };
 
+    //NECESITOOE ESTOS
     const loadEspecialidades = async () => {
       try {
         const data = await specialtyService.getEspecialidades();
@@ -77,7 +75,7 @@ const Usuarios = () => {
         console.error('Error al obtener las especialidades:', error);
       }
     };
-
+    //NECESITOOE ESTOS
     const loadAreas = async () => {
       try {
         const data = await areaService.getAreas();
@@ -93,28 +91,22 @@ const Usuarios = () => {
     loadAreas();
   }, []);
 
-  //Muestra el modal agregar y establece valores predeterminados vacios
-  const handleShowAddModal_user = () => {
+  const handleShowAddModal = () => {
     setUserForm(initialUserState);
-    setShowModal_user(true);
+    setShowModal(true);
   };
 
-  //carga el usuario por id y Muestra el modal editar USUARIOS
-  const handleShowEditModal_user = async (Id) => {
+  const handleShowEditModal = async (userId) => {
     try {
-      const user = await usuarioService.getUsuarioById(Id);
+      const user = await usuarioService.getUsuarioById(userId);
       setUserForm(user[0][0]);
-      setShowModal_user(true);
-      // console.log('Usuario ID:', Usuarios.id_usuario);
+      setShowModal(true);
     } catch (error) {
       console.error('Error al obtener el usuario:', error);
     }
   };
 
-  //cerrar modales emergentes
-  const handleCloseModal = () => {
-    setShowModal_user(false);
-  };
+  const handleCloseModal = () => setShowModal(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -132,12 +124,15 @@ const Usuarios = () => {
     if (!userForm.direccion) newErrors.direccion = 'Dirección es requerida';
     if (!userForm.fecha_nacimiento) newErrors.fecha_nacimiento = 'Fecha de nacimiento es requerida';
     if (!userForm.sexo) newErrors.sexo = 'El campo sexo es requerido';
-    if (!userForm.nombre_especialidad) newErrors.nombre_especialidad = 'El nombre es requerido';
+    if (!userForm.id_rol) newErrors.id_rol = 'Rol es requerido';
+    if (!userForm.id_especialidad) newErrors.id_especialidad = 'Especialidad es requerido';
+    if (!userForm.id_area) newErrors.id_area = 'Área es requerido';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  //Copiar este para especialidad
   const handleSaveUser = async () => {
     if (!validateFields()) return;
 
@@ -205,10 +200,9 @@ const Usuarios = () => {
     }
   };
 
-  //Boton de cambiar el estado... Eliminar pues
-  const toggleUserState = async (Id) => {
+  const toggleUserState = async (userId) => {
     try {
-      await usuarioService.changeStateUsuario(Id);
+      await usuarioService.changeStateUsuario(userId);
 
       const data = await usuarioService.getAllUsuarios();
       setUsuarios(data);
@@ -234,156 +228,236 @@ const Usuarios = () => {
     }
   };
 
-  //Columnas USUARIOS
   const columns_usuario = [
-    { name: 'Nombre', selector: (row) => `${row.nombre} ${row.apellido}`, sortable: true },
-    { name: 'Email', selector: (row) => row.email, sortable: true },
-    { name: 'Rol', selector: (row) => row.nombre_rol, sortable: true },
-    { name: 'Especialidad', selector: (row) => row.nombre_especialidad, sortable: true },
-    { name: 'Area', selector: (row) => row.nombre_area, sortable: true },
-    { name: 'Estado', selector: (row) => row.estado, sortable: true },
+    {
+      name: 'Nombre',
+      selector: (row) => `${row.nombre} ${row.apellido}`,
+      sortable: true
+    },
+    {
+      name: 'Email',
+      selector: (row) => row.email,
+      sortable: true
+    },
+    {
+      name: 'Rol',
+      selector: (row) => row.nombre_rol,
+      sortable: true
+    },
+    {
+      name: 'Especialidad',
+      selector: (row) => row.nombre_especialidad,
+      sortable: true
+    },
+    {
+      name: 'Area',
+      selector: (row) => row.nombre_area,
+      sortable: true
+    },
+    {
+      name: 'Estado',
+      selector: (row) => row.estado,
+      sortable: true
+    },
+
     {
       name: 'Acciones',
       cell: (row) => (
         <div className="btn-group mt-2 mb-2" role="group" aria-label="Usuario actions">
-          <Button variant="warning" onClick={() => handleShowEditModal_user(row.id_usuario)}>
+          <Button variant="warning" onClick={() => handleShowEditModal(row.id_usuario)}>
             <FontAwesomeIcon icon={faEdit} className="me-1" />
           </Button>
 
-          <Button variant={row.estado === 'activo' ? 'danger' : 'danger'} onClick={() => toggleUserState(row.id_usuario)}>
-            <FontAwesomeIcon icon={faTrash} className="me-1" />
+          <Button variant={row.estado === 'activo' ? 'info' : 'danger'} onClick={() => toggleUserState(row.id_usuario)}>
+            <FontAwesomeIcon icon={faToggleOn} className="me-1" />
           </Button>
         </div>
       )
     }
-  ]; //TERMINA Columnas USUARIOS
+  ];
+
+  // //Columnas especialidad
+  // const columns_especialidad = [
+  //   {
+  //     name: 'Nombre Especialidad',
+  //     selector: (row) => `${row.nombre_especialidad}`,
+  //     sortable: true
+  //   },
+  //   {
+  //     name: 'Estado',
+  //     selector: (row) => `${row.estado}`,
+  //     sortable: true
+  //   },
+  //   {
+  //     name: 'Acciones',
+  //     cell: (row) => (
+  //       <div className="btn-group mt-2 mb-2" role="group" aria-label="Usuario actions">
+  //         <Button variant="warning" onClick={() => handleShowEditModal(row.id_especialidad)}>
+  //           <FontAwesomeIcon icon={faEdit} className="me-1" />
+  //         </Button>
+
+  //         <Button variant={row.estado === 'activo' ? 'info' : 'danger'} onClick={() => toggleUserState(row.id_especialidad)}>
+  //           <FontAwesomeIcon icon={faToggleOn} className="me-1" />
+  //         </Button>
+  //       </div>
+  //     )
+  //   }
+  // ]; //Termina Columnas especialidad
+
+  // //Columnas AREA
+  // const columns_area = [
+  //   {
+  //     name: 'Nombre Áreas',
+  //     selector: (row) => `${row.nombre_area}`,
+  //     sortable: true
+  //   },
+  //   {
+  //     name: 'Estado',
+  //     selector: (row) => `${row.estado}`,
+  //     sortable: true
+  //   },
+  //   {
+  //     name: 'Acciones',
+  //     cell: (row) => (
+  //       <div className="btn-group mt-2 mb-2" role="group" aria-label="Usuario actions">
+  //         <Button variant="warning" onClick={() => handleShowEditModal(row.id_area)}>
+  //           <FontAwesomeIcon icon={faEdit} className="me-1" />
+  //         </Button>
+
+  //         <Button variant={row.estado === 'activo' ? 'info' : 'danger'} onClick={() => toggleUserState(row.id_area)}>
+  //           <FontAwesomeIcon icon={faToggleOn} className="me-1" />
+  //         </Button>
+  //       </div>
+  //     )
+  //   }
+  // ]; //Termina Columnas AREA
 
   const subHeaderComponentMemo = React.useMemo(() => {
     return (
       <Container>
-        <InputGroup>
-          <FormControl placeholder="Buscar" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-        </InputGroup>
+        <Row className="justify-content-end">
+          <Col md={4}>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Buscar</InputGroup.Text>
+              <FormControl placeholder="Buscar por nombre o email" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            </InputGroup>
+          </Col>
+        </Row>
       </Container>
     );
   }, [searchTerm]);
 
   if (loading) {
-    return <p>Cargando datos...</p>;
+    return <p>Cargando usuarios...</p>;
   }
 
   return (
     <React.Fragment>
       <Row>
-        <Card title="Usuarios del personal médico" isOption>
-          <Button onClick={() => handleShowAddModal_user()} variant="info">
-            <FontAwesomeIcon icon={faPlus} className="me-1" /> Agregar Nuevo
-          </Button>
+        <Col>
+          <Card title="Usuarios del personal médico" isOption>
+            <Button onClick={() => handleShowAddModal()} variant="info">
+              <FontAwesomeIcon icon={faPlus} className="me-1" /> Agregar Usuario
+            </Button>
 
-          <Row className="justify-content-end">
-            <Col md={4}>
-              <Form.Label>Nombre o Email:</Form.Label>
-              {subHeaderComponentMemo}
-            </Col>
-          </Row>
+            <DataTable
+              columns={columns_usuario}
+              data={usuarios.filter(
+                (usuario) =>
+                  (usuario.nombre && usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                  (usuario.apellido && usuario.apellido.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                  (usuario.email && usuario.email.toLowerCase().includes(searchTerm.toLowerCase()))
+              )}
+              pagination
+              striped
+              responsive
+              highlightOnHover
+              dense
+              noHeader
+              subHeader
+              subHeaderComponent={subHeaderComponentMemo}
+              noDataComponent={<div>No hay usuarios disponibles para mostrar.</div>}
+              expandableRows // Habilitar filasexpandibles
+              expandableRowsComponent={({ data }) => (
+                <div style={{ padding: '25px' }}>
+                  <Row>
+                    <Col md={3}>
+                      <div className="form-label">
+                        <label>Nombre: </label>
+                        <p>
+                          {data.nombre} {data.apellido}
+                        </p>
+                      </div>
 
-          <DataTable
-            className="mt-4"
-            columns={columns_usuario}
-            data={usuarios.filter(
-              (usuario) =>
-                (usuario.nombre && usuario.nombre.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (usuario.apellido && usuario.apellido.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                (usuario.email && usuario.email.toLowerCase().includes(searchTerm.toLowerCase()))
-            )}
-            pagination
-            striped
-            responsive
-            highlightOnHover
-            dense
-            noHeader
-            noDataComponent={<div>No hay usuarios disponibles para mostrar.</div>}
-            expandableRows // Habilitar filasexpandibles
-            expandableRowsComponent={({ data }) => (
-              <div style={{ padding: '25px' }}>
-                <Row>
-                  <Col md={3}>
-                    <div className="form-label">
-                      <label>Nombre: </label>
-                      <p>
-                        {data.nombre} {data.apellido}
-                      </p>
-                    </div>
+                      <div>
+                        <label>Dui: </label>
+                      </div>
+                      <p>{data.dui}</p>
 
-                    <div>
-                      <label>Dui: </label>
-                    </div>
-                    <p>{data.dui}</p>
+                      <div>
+                        <label>Teléfono:</label>
+                        <p>{data.telefono}</p>
+                      </div>
 
-                    <div>
-                      <label>Teléfono:</label>
-                      <p>{data.telefono}</p>
-                    </div>
+                      <div>
+                        <label>Dirección:</label>
+                        <textarea className="custom-textarea" rows="3" readOnly>
+                          {data.direccion}
+                        </textarea>
+                      </div>
+                    </Col>
 
-                    <div>
-                      <label>Dirección:</label>
-                      <textarea className="custom-textarea" rows="3" readOnly>
-                        {data.direccion}
-                      </textarea>
-                    </div>
-                  </Col>
+                    <Col md={3}>
+                      <div>
+                        <label>N° Seguro Social:</label>
+                        <p>{data.numero_seguro_social}</p>
+                      </div>
 
-                  <Col md={3}>
-                    <div>
-                      <label>N° Seguro Social:</label>
-                      <p>{data.numero_seguro_social}</p>
-                    </div>
+                      <div>
+                        <label>Email:</label>
+                        <p>{data.email}</p>
+                      </div>
 
-                    <div>
-                      <label>Email:</label>
-                      <p>{data.email}</p>
-                    </div>
+                      <div>
+                        <label>Fecha de Nacimiento:</label>
+                        <p>{data.fecha_nacimiento.split('T')[0]}</p>
+                      </div>
 
-                    <div>
-                      <label>Fecha de Nacimiento:</label>
-                      <p>{data.fecha_nacimiento.split('T')[0]}</p>
-                    </div>
+                      <div>
+                        <label>Sexo:</label>
+                        <p>{data.sexo}</p>
+                      </div>
+                    </Col>
 
-                    <div>
-                      <label>Sexo:</label>
-                      <p>{data.sexo}</p>
-                    </div>
-                  </Col>
+                    <Col md={2}>
+                      <div>
+                        <label>Estado:</label>
+                        <p>{data.estado}</p>
+                      </div>
+                      <div>
+                        <label>Rol:</label>
+                        <p>{data.nombre_rol}</p>
+                      </div>
 
-                  <Col md={2}>
-                    <div>
-                      <label>Estado:</label>
-                      <p>{data.estado}</p>
-                    </div>
-                    <div>
-                      <label>Rol:</label>
-                      <p>{data.nombre_rol}</p>
-                    </div>
+                      <div>
+                        <label>Especialidad:</label>
+                        <p>{data.nombre_especialidad}</p>
+                      </div>
 
-                    <div>
-                      <label>Especialidad:</label>
-                      <p>{data.nombre_especialidad}</p>
-                    </div>
-
-                    <div>
-                      <label>Área:</label>
-                      <p>{data.nombre_area}</p>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-            )}
-          />
-        </Card>
+                      <div>
+                        <label>Área:</label>
+                        <p>{data.nombre_area}</p>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+              )}
+            />
+          </Card>
+        </Col>
       </Row>
 
-      {/* MODAL DE USUARIOS */}
-      <Modal show={showModal_user} onHide={handleCloseModal} size="xl">
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
         <Modal.Header closeButton>
           <Modal.Title>{userForm.id_usuario ? 'Editar Usuario' : 'Agregar Usuario'}</Modal.Title>
         </Modal.Header>
@@ -438,9 +512,11 @@ const Usuarios = () => {
                     value={userForm.dui || ''}
                     onChange={(e) => {
                       const value = e.target.value;
-                      const regex = /^[0-9]{0,8}(-[0-9]{0,1})?$/;
+                      const regex = /^[0-9]{0,8}(-[0-9]{0,1})?$/; // Regex para DUI
+
+                      // Solo actualiza el estado si el valor es válido
                       if (regex.test(value)) {
-                        handleInputChange(e);
+                        handleInputChange(e); // Permite actualizar solo si pasa la validación
                       }
                     }}
                     maxLength={10}
@@ -448,6 +524,20 @@ const Usuarios = () => {
                   />
                   <Form.Control.Feedback type="invalid">{errors.dui}</Form.Control.Feedback>
                 </Form.Group>
+
+                {/* <Form.Group>
+                        <Form.Label>DUI</Form.Label>
+                        <Form.Control
+                          name="dui"
+                          value={userForm.dui || ''}
+                          onChange={handleInputChange}
+                          type="text"
+                          maxLength={10}
+                          isInvalid={!!errors.dui}
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">{errors.dui}</Form.Control.Feedback>
+                      </Form.Group> */}
               </Col>
               <Col md={3}>
                 <Form.Group>
@@ -457,9 +547,9 @@ const Usuarios = () => {
                     name="telefono"
                     value={userForm.telefono || ''}
                     onChange={(e) => {
-                      const regex = /^[0-9]{0,4}(-?[0-9]{0,4})$/;
+                      const regex = /^[0-9]{0,4}(-?[0-9]{0,4})$/; // Permite 4 dígitos, guion opcional y otros 4 dígitos
                       if (regex.test(e.target.value)) {
-                        handleInputChange(e);
+                        handleInputChange(e); // Llama a la función para manejar el cambio si pasa la validación
                       }
                     }}
                     type="text"

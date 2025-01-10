@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col } from 'react-bootstrap';
 import { consultaService } from '../../services/consultaService';
 import Card from '../../components/Card/MainCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import { faHeartbeat, faStethoscope, faCheckCircle, faQuestionCircle, faSmile } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
-import { Button, InputGroup, FormControl, Container, Badge } from 'react-bootstrap';
+import { Row, Col, Button, InputGroup, FormControl, Container, Badge } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { useAuth } from 'components/AuthContext';
 
@@ -139,8 +138,9 @@ const TomarConsulta = () => {
 
     {
       name: 'Motivo',
-      selector: (row) => row.motivo_consulta,
-      sortable: true
+      selector: row => row.motivo_consulta.length > 0 ? 
+        row.motivo_consulta.split(" ").slice(0, 5).join("") + ("...") 
+        : "N/A"      
     },
 
     {
@@ -228,10 +228,10 @@ const TomarConsulta = () => {
                       </div> */}
                     </Col>
 
-                    <Col md={4}>
+                    <Col md={6}>
                       <div>
                         <label>Motivo:</label>
-                        <textarea className="custom-textarea" rows="3" readOnly>
+                        <textarea className="custom-textarea" rows="4" readOnly>
                           {data.motivo_consulta}
                         </textarea>
                       </div>
@@ -244,6 +244,7 @@ const TomarConsulta = () => {
         </Col>
       </Row>
     </React.Fragment>
+
   );
 };
 

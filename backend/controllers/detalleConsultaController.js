@@ -19,19 +19,19 @@ exports.listarDetalleConsultasById = (req, res) => {
         if (err) {
             return res.status(500).json({ message: "Error al listar el detalle seleccionado", error: err });
         }
-        res.status(200).json(result[0]); 
+        res.status(200).json(result[0]);
     });
 };
 
-
-exports.listarDetalleConsultasByIdDetalle = (req, res) => {
+////////////////////////////////////7
+exports.listarDetalleConsultasByIdDetallePDF = (req, res) => {
     const id = req.params.id;
 
-    DetalleConsulta.listarDetalleConsultasByIdDetalle(id, (err, result) => {
+    DetalleConsulta.listarDetalleConsultasByIdDetallePDF(id, (err, result) => {
         if (err) {
-            return res.status(500).json({ message: "Error al listar el detalle seleccionado", error: err });
+            return res.status(500).json({ message: "Controller: Error al listar el detalle seleccionado", error: err });
         }
-        res.status(200).json(result[0]); 
+        res.status(200).json(result[0]);
     });
 };
 
