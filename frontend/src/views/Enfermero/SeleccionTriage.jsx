@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import Card from '../../components/Card/MainCard';
+import Select from 'react-select';
 import { specialtyService } from 'services/specialtyService';
 import { pacienteService } from 'services/pacienteService';
 import { tipoConsultaService } from 'services/tipoConsultaService';
@@ -27,7 +28,7 @@ const SeleccionTriage = () => {
     const loadPacientes = async () => {
       try {
         const data = await pacienteService.getPacientes();
-        setPacientes(data);
+        setPacientes(data.map((p) => ({ value: p.id_paciente, label: `${p.nombre_paciente} ${p.apellido_paciente}` })));
       } catch (error) {
         console.error('Error al obtener los pacientes:', error);
       }
@@ -36,7 +37,7 @@ const SeleccionTriage = () => {
     const loadEspecialidades = async () => {
       try {
         const data = await specialtyService.getEspecialidades();
-        setEspecialidades(data);
+        setEspecialidades(data.map((e) => ({ value: e.id_especialidad, label: e.nombre_especialidad })));
       } catch (error) {
         console.error('Error al obtener las especialidades:', error);
       }
@@ -59,6 +60,10 @@ const SeleccionTriage = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserForm({ ...userForm, [name]: value });
+  };
+
+  const handleSelectChange = (selectedOption, field) => {
+    setUserForm({ ...userForm, [field]: selectedOption ? selectedOption.value : '' });
   };
 
   const validateFields = () => {
@@ -189,45 +194,32 @@ const SeleccionTriage = () => {
                 </Col>
               </Row>
 
-              <Row className="mt-2">
+                         {/* MODIFICADO */}
+               <Row className="mt-2">
                 <Col md={6}>
                   <Form.Group>
                     <Form.Label>Paciente</Form.Label>
-                    <Form.Select
-                      name="id_paciente"
-                      onChange={handleInputChange}
-                      value={userForm.id_paciente}
-                      isInvalid={!!errors.id_paciente}
-                      required
-                    >
-                      <option value="">Seleccione un paciente</option>
-                      {pacientes.map((paciente) => (
-                        <option key={paciente.id_paciente} value={paciente.id_paciente}>
-                          {paciente.nombre_paciente} {paciente.apellido_paciente}
-                        </option>
-                      ))}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">{errors.id_paciente}</Form.Control.Feedback>
+                    <Select
+                      options={pacientes}
+                      placeholder="Seleccione un paciente"
+                      onChange={(selectedOption) => handleSelectChange(selectedOption, 'id_paciente')}
+                      value={pacientes.find((p) => p.value === userForm.id_paciente)}
+                      isClearable
+                    />
+                    {errors.id_paciente && <div className="text-danger">{errors.id_paciente}</div>}
                   </Form.Group>
                 </Col>
                 <Col md={6}>
                   <Form.Group>
                     <Form.Label>Especialidad</Form.Label>
-                    <Form.Select
-                      name="id_especialidad"
-                      onChange={handleInputChange}
-                      value={userForm.id_especialidad}
-                      isInvalid={!!errors.id_especialidad}
-                      required
-                    >
-                      <option value="">Seleccione una especialidad</option>
-                      {especialidades.map((esp) => (
-                        <option key={esp.id_especialidad} value={esp.id_especialidad}>
-                          {esp.nombre_especialidad}
-                        </option>
-                      ))}
-                    </Form.Select>
-                    <Form.Control.Feedback type="invalid">{errors.id_especialidad}</Form.Control.Feedback>
+                    <Select
+                      options={especialidades}
+                      placeholder="Seleccione una especialidad"
+                      onChange={(selectedOption) => handleSelectChange(selectedOption, 'id_especialidad')}
+                      value={especialidades.find((e) => e.value === userForm.id_especialidad)}
+                      isClearable
+                    />
+                    {errors.id_especialidad && <div className="text-danger">{errors.id_especialidad}</div>}
                   </Form.Group>
                 </Col>
               </Row>
