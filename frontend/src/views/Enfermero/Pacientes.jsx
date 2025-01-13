@@ -75,7 +75,6 @@ const Pacientes = () => {
   const validateFields = () => {
     const newErrors = {};
 
-    if (!userForm.n_expediente) newErrors.n_expediente = 'Número de expediente es requerido';
     if (!userForm.nombre_paciente) newErrors.nombre_paciente = 'Nombre del paciente es requerido';
     if (!userForm.apellido_paciente) newErrors.apellido_paciente = 'Apellido del paciente es requerido';
     if (!userForm.fecha_nacimiento_paciente) newErrors.fecha_nacimiento_paciente = 'Fecha de nacimiento del paciente es requerida';
@@ -373,20 +372,27 @@ const Pacientes = () => {
                   </Row>
 
                   <Row className="mt-2">
-                    <Col md={4}>
-                      <Form.Group>
-                        <Form.Label>Expediente</Form.Label>
-                        <Form.Control
-                          name="n_expediente"
-                          onChange={handleInputChange}
-                          value={userForm.n_expediente || ''}
-                          type="text"
-                          isInvalid={!!errors.n_expediente}
-                          required
-                        />
-                        <Form.Control.Feedback type="invalid">{errors.n_expediente}</Form.Control.Feedback>
-                      </Form.Group>
-                    </Col>
+                  <Col md={3}>
+                    <Form.Group>
+                      <Form.Label>Número de Expediente</Form.Label>
+                      <Form.Control
+                        name="n_expediente"
+                        value={userForm.n_expediente || ""}
+                        onChange={handleInputChange}
+                        type="text"
+                        readOnly
+                        isInvalid={!!errors.n_expediente}
+                        required
+                      />
+                      <Form.Text className="text-muted" style={{ fontSize: '0.8rem', marginTop: '0.25rem', fontWeight: 'bold' }}>
+                        Este campo se genera automáticamente.
+                      </Form.Text>
+                      <Form.Control.Feedback type="invalid">
+                        {errors.n_expediente}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+
                     <Col md={8}>
                       <Form.Group>
                         <Form.Label>Dirección</Form.Label>
