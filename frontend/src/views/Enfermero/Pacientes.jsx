@@ -3,7 +3,7 @@ import { Row, Col } from 'react-bootstrap';
 import { pacienteService } from '../../services/pacienteService';
 import Card from '../../components/Card/MainCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faToggleOn, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faTrash, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import { Button, InputGroup, FormControl, Container, Modal, Form } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
@@ -216,8 +216,8 @@ const Pacientes = () => {
             <FontAwesomeIcon icon={faEdit} className="me-1" />
           </Button>
 
-          <Button variant={row.estado === 'activo' ? 'success' : 'danger'} onClick={() => togglePacienteState(row.id_paciente)}>
-            <FontAwesomeIcon icon={faToggleOn} className="me-1" />
+          <Button variant={row.estado === 'activo' ? 'primary' : 'danger'} onClick={() => togglePacienteState(row.id_paciente)}>
+            <FontAwesomeIcon icon={faTrash} className="me-1" />
           </Button>
         </div>
       )
@@ -252,7 +252,7 @@ const Pacientes = () => {
       <Row>
         <Col>
           <Card title="Pacientes" isOption>
-            <Button onClick={() => handleShowAddModal()} variant="primary">
+            <Button onClick={() => handleShowAddModal()} variant="info">
               <FontAwesomeIcon icon={faPlus} className="me-1" /> Agregar Paciente
             </Button>
 
@@ -559,10 +559,10 @@ const Pacientes = () => {
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseModal}>
+                <Button variant="primary" onClick={handleCloseModal}>
                   Cancelar
                 </Button>
-                <Button variant="primary" onClick={userForm.id_paciente ? handleEditUser : handleSaveUser}>
+                <Button variant="info" onClick={userForm.id_paciente ? handleEditUser : handleSaveUser}>
                   {userForm.id_paciente ? 'Actualizar Paciente' : 'Guardar Paciente'}
                 </Button>
               </Modal.Footer>

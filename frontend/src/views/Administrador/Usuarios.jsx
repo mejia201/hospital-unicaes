@@ -5,7 +5,7 @@ import Card from '../../components/Card/MainCard';
 import DataTable from 'react-data-table-component';
 import { usuarioService } from '../../services/userService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faEdit, faToggleOn, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faEdit, faTrash, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { roleService } from 'services/roleService';
 import { specialtyService } from 'services/specialtyService';
 import { areaService } from 'services/areaService';
@@ -268,8 +268,8 @@ const Usuarios = () => {
             <FontAwesomeIcon icon={faEdit} className="me-1" />
           </Button>
 
-          <Button variant={row.estado === 'activo' ? 'info' : 'danger'} onClick={() => toggleUserState(row.id_usuario)}>
-            <FontAwesomeIcon icon={faToggleOn} className="me-1" />
+          <Button variant={row.estado === 'activo' ? 'primary' : 'danger'} onClick={() => toggleUserState(row.id_usuario)}>
+            <FontAwesomeIcon icon={faTrash} className="me-1" />
           </Button>
         </div>
       )

@@ -345,9 +345,9 @@ const Consulta = () => {
       <Row>
         <Col>
           <Card title="Tus Consultas" isOption>
-            <Button variant="primary" onClick={() => handleGeneratePDF(user.id_usuario)}>
+            {/* <Button variant="primary" onClick={() => handleGeneratePDF(user.id_usuario)}>
               Generar Detalle
-            </Button>
+            </Button> */}
             <DataTable
               columns={columns}
               data={consultas.filter(

@@ -243,7 +243,7 @@ const SeleccionTriage = () => {
 
               <div className="text-end mt-4">
                 <Button
-                  variant="primary"
+                  variant="info"
                   onClick={() => {
                     handleSaveConsulta();
                     setUserForm(initialUserState);
