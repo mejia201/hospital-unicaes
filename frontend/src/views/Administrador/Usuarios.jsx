@@ -473,7 +473,7 @@ const Usuarios = () => {
                       const regex = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/;
                       const value = e.target.value;
                       if (regex.test(value) || value === '') {
-                        handleInputChange(e); // Permite actualizar solo si pasa la validación
+                        handleInputChange(e); 
                       }
                     }}
                     value={userForm.nombre || ''}
