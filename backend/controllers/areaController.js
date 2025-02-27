@@ -12,6 +12,20 @@ exports.listarArea = (req, res) => {
     });
 };
 
+//listar area by id
+exports.listarAreaById = (req, res) => {
+    const id = req.params.id;
+
+    Area.listarAreaById(id, (err, result) => {
+        if (err) {
+            return res.status(500).json({
+                message: "Controller Error al listar la especialidad, seleccionada",
+                error: err,
+            });
+        }
+        res.status(200).json(result);
+    });
+};
 
 //Metodo Insert
 exports.insertarArea = (req, res) => {
@@ -44,13 +58,12 @@ exports.actualizarArea = (req, res) => {
 
 // Cambiar estado de la area, metodo DELETE
 exports.cambiarEstadoArea = (req, res) => {
-    const { id, estado } = req.body;
-
-    Area.cambiarEstadoArea(id, estado, (err, result) => {
+    const id = req.params.id; // Extrayendo el id de la URL
+    Area.cambiarEstadoArea(id, (err) => {
         if (err) {
             return res.status(500).json({ message: "Error al cambiar estado de la area", error: err });
         }
 
-        res.status(200).json({ message: "Estado de la area actualizada" });
+        res.status(200).json({ message: "Estado del area actualizada" });
     });
 };

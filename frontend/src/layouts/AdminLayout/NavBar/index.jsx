@@ -45,9 +45,8 @@ const NavBar = () => {
           <div className="b-bg">
             {/* <i className="feather icon-trending-up" /> */}
             <img src="./src/assets/images/UNICAES_Logo.png" alt="Logo" style={{ width: '40px', height: '40px' }} />
-            
           </div>
-          <span className="b-title">Hospital Unicaes</span>
+          <span className="b-title">HOSPITAL UNICAES</span>
         </Link>
         <Link to="#" className={moreClass.join(' ')} onClick={() => setMoreToggle(!moreToggle)}>
           <i className="feather icon-more-vertical" />

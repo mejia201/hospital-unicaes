@@ -33,7 +33,7 @@ Usuario.loginUsuario = (email, callback) => {
 
     // Listar usuarios
 Usuario.listarUsuarios = (callback) => {
-    const sql = `SELECT u.id_usuario, u.nombre, u.apellido, u.email, r.nombre_rol, e.nombre_especialidad, a.nombre_area, u.estado FROM usuario u JOIN rol r ON u.id_rol = r.id_rol join area a on u.id_area = a.id_area LEFT JOIN especialidad e ON u.id_especialidad = e.id_especialidad where u.estado = 'activo' `;
+    const sql = `SELECT u.id_usuario, u.nombre, u.apellido,u.dui, u.direccion, u.email,u.telefono,u.fecha_nacimiento, u.sexo, u.numero_seguro_social, r.nombre_rol, e.nombre_especialidad, a.nombre_area, u.estado FROM usuario u JOIN rol r ON u.id_rol = r.id_rol join area a on u.id_area = a.id_area LEFT JOIN especialidad e ON u.id_especialidad = e.id_especialidad where u.estado = 'activo' `;
 
 
     db.query(sql, (err, results) => {

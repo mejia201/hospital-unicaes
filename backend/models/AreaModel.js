@@ -10,13 +10,24 @@ Area.listarArea = (callback) => {
 
     db.query(sql, (err, results) => {
         if (err) {
-            console.error("Error al listar las areas:", err);
+            console.error("model: Error al listar las areas:", err);
             return callback(err, null);
         }
         return callback(null, results);
     });
 };
 
+Area.listarAreaById = (id, callback) => {
+    const sql = `SELECT * FROM area WHERE id_area = ?`;
+
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error("model: Error al listar el area por id:", err);
+            return callback(err, null);
+        }
+        return callback(null, result);
+    });
+};
 
 Area.insertarArea = (areaData, callback) => {
     const sql = `CALL sp_InsertarArea(?)`;
@@ -26,10 +37,10 @@ Area.insertarArea = (areaData, callback) => {
     } = areaData;
 
     db.query(sql, [
-       nombre_area
+        nombre_area
     ], (err, result) => {
         if (err) {
-            console.error("Error al insertar la area:", err);
+            console.error("model: Error al insertar la area:", err);
             return callback(err, null);
         }
 
@@ -49,7 +60,7 @@ Area.actualizarArea = (id, areaData, callback) => {
         id, nombre_area
     ], (err, result) => {
         if (err) {
-            console.error("Error al actualizar la area:", err);
+            console.error("model: Error al actualizar la area:", err);
             return callback(err, null);
         }
         return callback(null, result);
@@ -57,12 +68,12 @@ Area.actualizarArea = (id, areaData, callback) => {
 };
 
 // Cambiar estado de una area, metodo DELETE pero solo cambio de estado,  no elimina registros (no es recomendado)
-Area.cambiarEstadoArea = (id, nuevoEstado, callback) => {
-    const sql = `UPDATE area SET estado = ? WHERE id_area = ?`;
+Area.cambiarEstadoArea = (id, callback) => {
+    const sql = `UPDATE area SET estado = 'inactivo' WHERE id_area = ?`;
 
-    db.query(sql, [nuevoEstado, id], (err, result) => {
+    db.query(sql, [id], (err, result) => {
         if (err) {
-            console.error("Error al cambiar estado de la area:", err);
+            console.error("model: Error al cambiar estado de la area:", err);
             return callback(err, null);
         }
         return callback(null, result);
